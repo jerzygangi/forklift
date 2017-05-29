@@ -1,14 +1,14 @@
 ![Forklift](./artwork/logo_rendered.png)
 
 # Welcome to Forklift
-Forklift is an ETL toolbox for Spark and Airflow.
+If you're building a 21st century data pipeline on Hadoop, and orchestrating it with Airflow, you'll quickly become overwhelmed. How do you move a table from Redshift to Spark? How do you clean up data from S3? How do you convert from TSV to Parquet? How do you quickly rename columns? Forklift solves all of these problems. It's the first turnkey ETL suite for Hadoop and Airflow. So sit back, clone the repo, and let Forklift do the heavy lifting.
 
 ## What can Forklift do?
 ### Make an Excel file from dataframes
 XLSBuilder builds an Excel file, with a tab for each Spark dataframe:
 
 ```python
-xls = XLSBuilder("test4.xls")
+xls = XLSBuilder("my_file.xls")
 df1 = sqlContext.read.parquet("hdfs:///data1")
 xls.addTab(df1, "Data 1")
 df2 = sqlContext.read.parquet("hdfs:///data2")
