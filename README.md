@@ -1,7 +1,7 @@
 ![Forklift](./artwork/logo_rendered.png)
 
 # Welcome to Forklift
-If you're building a 21st century data pipeline on Hadoop, and orchestrating it with Airflow, you'll quickly become overwhelmed. How do you move a table from Redshift to Spark? How do you clean up data from S3? How do you convert from TSV to Parquet? How do you quickly rename columns? Forklift solves all of these problems. It's the first turnkey ETL suite for Hadoop and Airflow. So sit back, clone the repo, and let Forklift do the heavy lifting.
+If you're building a 21st century data pipeline on Hadoop, and orchestrating it with Airflow, you'll quickly become overwhelmed. How do you move a table from Redshift to Spark? How do you clean up data from S3? How do you convert from TSV to Parquet? How do you quickly rename columns? Forklift solves all of these problems. It's the first ETL ("Extract-Transform-Load") suite for Hadoop and Airflow. So sit back, clone the repo, and let Forklift do the heavy lifting.
 
 ## What can Forklift do?
 ### Make an Excel file from dataframes
