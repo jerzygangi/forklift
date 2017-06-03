@@ -1,6 +1,7 @@
 from os.path import isfile
 from json import load
 from pyspark.sql.dataframe import DataFrame
+from pyspark.sql.types import *
 
 class Forklift(object):
 
