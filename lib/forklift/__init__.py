@@ -9,7 +9,7 @@ class Forklift(object):
     print("Step 1: Check that arguments are valid")
     if not isinstance(dataframe, DataFrame):
       raise TypeError("dataframe must be an instance of Dataframe")
-    if size(dataframe.columns) < 1:
+    if len(dataframe.columns) < 1:
       raise ValueError("dataframe must have 1 or more columns")
     if dataframe.count() < 1:
       raise ValueError("dataframe must have 1 or more rows")
