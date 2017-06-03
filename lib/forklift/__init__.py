@@ -7,7 +7,7 @@ class Forklift(object):
   @classmethod
   def normalize_and_sanitize(klass, dataframe, with_spark_schema, remappings_file_path, cast_processor):
     print("Step 1: Check that arguments are valid")
-    if not isinstance(dataframe, Dataframe):
+    if not isinstance(dataframe, DataFrame):
       raise TypeError("dataframe must be an instance of Dataframe")
     if size(dataframe.columns) < 1:
       raise ValueError("dataframe must have 1 or more columns")
