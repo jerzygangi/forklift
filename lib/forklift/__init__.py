@@ -16,7 +16,7 @@ class Forklift(object):
       raise ValueError("dataframe must have 1 or more rows")
     if not isinstance(with_spark_schema, StructType):
       raise TypeError("with_spark_schema must be an instance of StructType")
-    if not size(with_spark_schema) < 1:
+    if not len(with_spark_schema) < 1:
       raise ValueError("with_spark_schema must have at least one StructField column")
     if not isfile(remappings_file_path):
       raise ValueError("remappings_file_path must be a file that exists")
