@@ -7,7 +7,7 @@ class CannotRenameAColumnThatDoesntExistException(Exception):
     pass
 
 class ColumnRenamer(object):
-  def __init__(self, dataframe, remappings_file_path):
+  def __init__(self, remappings_file_path):
     with open(remappings_file_path) as remappings_file:
         self.column_remappings = json.load(remappings_file)["remappings"]
   
