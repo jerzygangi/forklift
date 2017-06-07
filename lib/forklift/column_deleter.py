@@ -11,6 +11,6 @@ class ColumnDeleter(object):
       unwanted_column_names = [column for column in dataframe.columns if column not in self.column_remappings.values()]
     try:
       column_name_to_drop = unwanted_column_names.pop()
-      return delete_columns(dataframe.drop(column_name_to_drop), unwanted_column_names)
+      return self.delete_columns(dataframe.drop(column_name_to_drop), unwanted_column_names)
     except IndexError:
       return dataframe
