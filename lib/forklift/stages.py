@@ -1,14 +1,14 @@
-class ForkliftStage(object):
+class ForkliftNSStage(object):
   pass
 
-class NS_ALL(ForkliftStage):
+class NS_ALL(ForkliftNSStage):
   pass
 
-class NS_RENAME_COLS(ForkliftStage):
+class NS_RENAME_COLS(ForkliftNSStage):
   pass
 
-class NS_DELETE_COLS(ForkliftStage):
+class NS_DELETE_COLS(ForkliftNSStage):
   pass
 
-class NS_CAST_CELLS(ForkliftStage):
+class NS_CAST_CELLS(ForkliftNSStage):
   pass
