@@ -22,5 +22,5 @@ class CellCaster(object):
     return casted_row
 
   def cast(self, dataframe):
-    cast_rdd dataframe.rdd.map(lambda row: self.cast_values_in_row(row))
+    cast_rdd = dataframe.rdd.map(lambda row: self.cast_values_in_row(row))
     return sqlContext.createDataFrame(cast_rdd, self.schema)
