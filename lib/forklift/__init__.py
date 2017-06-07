@@ -5,6 +5,7 @@ from pyspark.sql.dataframe import DataFrame
 from pyspark.sql.types import *
 # Forklift
 from .column_renamer import ColumnRenamer
+from .column_deleter import ColumnDeleter
 from .caster import CastProcessor
 from .stages import *
 
