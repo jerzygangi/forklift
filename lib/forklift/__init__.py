@@ -5,6 +5,7 @@ from json import load
 from pyspark.sql.dataframe import DataFrame
 from pyspark.sql.types import *
 # Forklift
+from .column_renamer import ColumnRenamer
 from .caster import CastProcessor
 from .stages import *
 
@@ -37,8 +38,7 @@ class Forklift(object):
 
     if any([stage in stages for stage in [NS_ALL, NS_RENAME_COLS]]):
       print("Step 2: Rename all columns, according to the mapping")
-      column_renamer = Forklift.ColumnRenamer(remappings_file_path)
-      dataframe = column_renamer.rename_columns(dataframe)
+      dataframe = Forklift.ColumnRenamer(dataframe, remappings_file_path)
     else:
       print("Skipping Step 2: Rename all columns, according to the mapping")
 
