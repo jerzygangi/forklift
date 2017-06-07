@@ -24,8 +24,8 @@ class Forklift(object):
       raise ValueError("with_spark_schema must have at least one StructField column")
     if not isfile(remappings_file_path):
       raise ValueError("remappings_file_path must be a file that exists")
-    if not isinstance(cast_processor, Forklift.CastProcessor):
-      raise TypeError("cast_processor must be an instance of Forklift.CastProcessor")
+    if not isinstance(cast_processor, CastProcessor):
+      raise TypeError("cast_processor must be an instance of CastProcessor")
 
     print("Step 2: Rename all columns, according to the mapping")
     column_renamer = Forklift.ColumnRenamer(remappings_file_path)
