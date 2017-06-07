@@ -1,4 +1,4 @@
-from json import load
+import json
 
 # Custom exception class for trying to rename a column that doesn't exist
 class CannotRenameAColumnThatDoesntExistException(Exception):
