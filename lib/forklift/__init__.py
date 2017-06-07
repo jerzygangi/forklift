@@ -45,7 +45,7 @@ class Forklift(object):
 
     if any([stage in stages for stage in [NS_ALL, NS_DELETE_COLS]]):
       print("Step 3: Delete unwanted columns, according to the mapping")
-      column_deleter = Forklift.ColumnDeleter(remappings_file_path)
+      column_deleter = ColumnDeleter(remappings_file_path)
       dataframe = column_deleter.delete_columns(dataframe)
     else:
       print("Skipping Step 3: Delete unwanted columns, according to the mapping")
