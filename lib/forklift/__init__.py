@@ -11,7 +11,7 @@ from .caster import CastProcessor
 from .stages import *
 
 class Forklift(object):
-  def __init__(sql_context):
+  def __init__(self, sql_context):
     self.sql_context = sql_context
 
   @classmethod
