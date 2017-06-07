@@ -9,7 +9,6 @@ from .caster import CastProcessor
 from .stages import *
 
 class Forklift(object):
-
   @classmethod
   def normalize_and_sanitize(klass, dataframe, with_spark_schema, remappings_file_path, cast_processor):
     print("Step 1: Check that arguments are valid")
