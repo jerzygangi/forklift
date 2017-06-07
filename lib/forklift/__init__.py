@@ -9,8 +9,8 @@ from .caster import CastProcessor
 from .stages import *
 
 class Forklift(object):
-
-  def validate_list_of_stages(stages):
+  @classmethod
+  def validate_list_of_stages(klass, stages):
     if not isinstance(stages, list):
       return False
     return not (False in [True if ForkliftNSStage in stage.__bases__ else False for stage in my_stages])
@@ -32,7 +32,7 @@ class Forklift(object):
       raise ValueError("remappings_file_path must be a file that exists")
     if not CastProcessor in cast_processor.__bases__:
       raise TypeError("cast_processor must be a child class of CastProcessor")
-    if validate_list_of_stages(stages):
+    if klass.validate_list_of_stages(stages):
       raise TypeError("stages must be a list of ForkliftNSStage")
 
     if any([stage in stages for stage in [NS_ALL, NS_RENAME_COLS]]):
