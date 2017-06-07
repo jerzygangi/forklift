@@ -11,14 +11,16 @@ from .caster import CastProcessor
 from .stages import *
 
 class Forklift(object):
+  def __init__(self, sql_context):
+    self.sql_context = sql_context
+  
   @classmethod
   def validate_list_of_stages(klass, stages):
     if not isinstance(stages, list):
       return False
     return not (False in [True if ForkliftNSStage in stage.__bases__ else False for stage in stages])
 
-  @classmethod
-  def normalize_and_sanitize(klass, dataframe, with_spark_schema, remappings_file_path, cast_processor, stages=[NS_ALL]):
+  def normalize_and_sanitize(self, dataframe, with_spark_schema, remappings_file_path, cast_processor, stages=[NS_ALL]):
     print("Step 1: Check that arguments are valid")
     if not isinstance(dataframe, DataFrame):
       raise TypeError("dataframe must be an instance of Dataframe")
@@ -34,7 +36,7 @@ class Forklift(object):
       raise ValueError("remappings_file_path must be a file that exists")
     if not CastProcessor in cast_processor.__bases__:
       raise TypeError("cast_processor must be a child class of CastProcessor")
-    if not klass.validate_list_of_stages(stages):
+    if not self.validate_list_of_stages(stages):
       raise TypeError("stages must be a list of ForkliftNSStage")
 
     if any([stage in stages for stage in [NS_ALL, NS_RENAME_COLS]]):
@@ -53,7 +55,7 @@ class Forklift(object):
 
     if any([stage in stages for stage in [NS_ALL, NS_CAST_CELLS]]):
       print("Step 4: Cast each cell, according to the Caster instance provided")
-      caster = CellCaster(cast_processor, with_spark_schema)
+      caster = CellCaster(cast_processor, with_spark_schema, self.sql_context)
       dataframe = caster.cast(dataframe)
     else:
       print("Skipping Step 4: Cast each cell, according to the Caster instance provided")

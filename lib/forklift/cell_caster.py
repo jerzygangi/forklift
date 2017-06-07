@@ -3,9 +3,10 @@ class CastProcessor(object):
   pass
 
 class CellCaster(object):
-  def __init__(self, cast_processor_klass, spark_schema):
+  def __init__(self, cast_processor_klass, spark_schema, sql_context):
     self.cast_processor = cast_processor_klass()
     self.schema = spark_schema
+    self.sql_context = sql_context
 
   def cast_cell(self, column_name, old_cell_value):
     if hasattr(self.cast_processor, 'cast_all_cells'):
@@ -23,4 +24,4 @@ class CellCaster(object):
 
   def cast(self, dataframe):
     cast_rdd = dataframe.rdd.map(lambda row: self.cast_values_in_row(row))
-    return sqlContext.createDataFrame(cast_rdd, self.schema)
+    return self.sql_context.createDataFrame(cast_rdd, self.schema)
