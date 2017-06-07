@@ -8,7 +8,10 @@ class ColumnRenamer(object):
         self.column_remappings = json.load(remappings_file)["remappings"]
     return self.rename_columns(dataframe)
   
-  def rename_columns(self, dataframe, dictionary_of_column_remapping=self.column_remappings):
+  def rename_columns(self, dataframe, dictionary_of_column_remapping=None):
+    # As per https://stackoverflow.com/a/1802980/98168
+    if dictionary_of_column_remapping is None:
+      dictionary_of_column_remapping = self.column_remappings
     try:
       old_column_name, new_column_name = dictionary_of_column_remapping.popitem()
       # If the remapping includes an old column name that doesn't exist, that's probably a mistake
