@@ -37,7 +37,8 @@ class Forklift(object):
 
     if any([stage in stages for stage in [NS_ALL, NS_RENAME_COLS]]):
       print("Step 2: Rename all columns, according to the mapping")
-      dataframe = ColumnRenamer(dataframe, remappings_file_path)
+      column_renamer = ColumnRenamer(remappings_file_path)
+      dataframe = column_renamer.rename_columns(dataframe)
     else:
       print("Skipping Step 2: Rename all columns, according to the mapping")
 
