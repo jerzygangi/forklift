@@ -32,23 +32,23 @@ class Forklift(object):
     if any([stage in stages for stage in [NS_ALL, NS_RENAME_COLS]]):
       print("Step 2: Rename all columns, according to the mapping")
       column_renamer = Forklift.ColumnRenamer(remappings_file_path)
-      dataframe_with_columns_renamed = column_renamer.rename_columns(dataframe)
+      dataframe = column_renamer.rename_columns(dataframe)
     else:
       print("Skipping Step 2: Rename all columns, according to the mapping")
 
     if any([stage in stages for stage in [NS_ALL, NS_DELETE_COLS]]):
       print("Step 3: Delete unwanted columns, according to the mapping")
       column_deleter = Forklift.ColumnDeleter(remappings_file_path)
-      dataframe_with_columns_renamed_and_unwanted_columns_deleted = column_deleter.delete_columns(dataframe_with_columns_renamed)
+      dataframe = column_deleter.delete_columns(dataframe)
     else:
       print("Skipping Step 3: Delete unwanted columns, according to the mapping")
 
     if any([stage in stages for stage in [NS_ALL, NS_CAST_CELLS]]):
       print("Step 4: Cast each cell, according to the Caster instance provided")
       caster = Forklift.Caster(cast_processor, with_spark_schema)
-      dataframe_with_columns_renamed_and_unwanted_columns_deleted_and_types_cast_and_schema_applied = caster.cast(dataframe_with_columns_renamed_and_unwanted_columns_deleted)
+      dataframe = caster.cast(dataframe)
     else:
       print("Skipping Step 4: Cast each cell, according to the Caster instance provided")
 
     print("Step 5: Return the normalized and sanitized dataframe")
-    return dataframe_with_columns_renamed_and_unwanted_columns_deleted_and_types_cast_and_schema_applied
+    return dataframe
