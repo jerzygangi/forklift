@@ -11,7 +11,6 @@ from .caster import CastProcessor
 from .stages import *
 
 class Forklift(object):
-  def __init__(self):
   
   @classmethod
   def validate_list_of_stages(klass, stages):
