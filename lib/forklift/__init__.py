@@ -13,7 +13,7 @@ class Forklift(object):
   def validate_list_of_stages(klass, stages):
     if not isinstance(stages, list):
       return False
-    return not (False in [True if ForkliftNSStage in stage.__bases__ else False for stage in my_stages])
+    return not (False in [True if ForkliftNSStage in stage.__bases__ else False for stage in stages])
 
   @classmethod
   def normalize_and_sanitize(klass, dataframe, with_spark_schema, remappings_file_path, cast_processor, stages=[NS_ALL]):
