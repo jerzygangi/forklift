@@ -10,7 +10,7 @@ from .stages import *
 
 class Forklift(object):
   @classmethod
-  def normalize_and_sanitize(klass, dataframe, with_spark_schema, remappings_file_path, cast_processor, stages=NS_ALL):
+  def normalize_and_sanitize(klass, dataframe, with_spark_schema, remappings_file_path, cast_processor, stages=[NS_ALL]):
     print("Step 1: Check that arguments are valid")
     if not isinstance(dataframe, DataFrame):
       raise TypeError("dataframe must be an instance of Dataframe")
