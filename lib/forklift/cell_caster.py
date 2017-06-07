@@ -2,7 +2,7 @@
 class CastProcessor(object):
   pass
 
-class ColumnCaster(object):
+class CellCaster(object):
   def __init__(self, cast_processor_klass, spark_schema):
     self.cast_processor = cast_processor_klass()
     self.schema = spark_schema

@@ -6,6 +6,7 @@ from pyspark.sql.types import *
 # Forklift
 from .column_renamer import ColumnRenamer
 from .column_deleter import ColumnDeleter
+from .cell_caster import CellCaster
 from .caster import CastProcessor
 from .stages import *
 
@@ -52,7 +53,7 @@ class Forklift(object):
 
     if any([stage in stages for stage in [NS_ALL, NS_CAST_CELLS]]):
       print("Step 4: Cast each cell, according to the Caster instance provided")
-      caster = Forklift.Caster(cast_processor, with_spark_schema)
+      caster = CellCaster(cast_processor, with_spark_schema)
       dataframe = caster.cast(dataframe)
     else:
       print("Skipping Step 4: Cast each cell, according to the Caster instance provided")
