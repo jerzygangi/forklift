@@ -24,10 +24,10 @@ class Forklift(object):
       raise ValueError("with_spark_schema must have at least one StructField column")
     if not isfile(remappings_file_path):
       raise ValueError("remappings_file_path must be a file that exists")
-    if not isinstance(cast_processor, CastProcessor):
-      raise TypeError("cast_processor must be an instance of CastProcessor")
     if not isinstance(stages, ForkliftStage):
       raise TypeError("stages must be an instance of ForkliftStage")
+    if not CastProcessor in cast_processor.__bases__:
+      raise TypeError("cast_processor must be a child class of CastProcessor")
 
     if any([stage in stages for stage in [NS_ALL, NS_RENAME_COLS]]):
       print("Step 2: Rename all columns, according to the mapping")
