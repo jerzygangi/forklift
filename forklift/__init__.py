@@ -58,7 +58,7 @@ class Forklift(object):
 
     if any([stage in stages for stage in [NS_ALL, NS_CAST_CELLS]]):
       print("Step 4: Cast each cell, according to the Caster instance provided")
-      caster = CellCaster(cast_processor, with_spark_schema)
+      caster = CellCaster(cast_processor, with_spark_schema, self.sql_context)
       dataframe = caster.cast(dataframe)
     else:
       print("Skipping Step 4: Cast each cell, according to the Caster instance provided")
