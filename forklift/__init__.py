@@ -7,7 +7,7 @@ from pyspark.sql.types import *
 from .column_renamer import ColumnRenamer
 from .column_deleter import ColumnDeleter
 from .cell_caster import CellCaster
-from .caster import CastProcessor
+from .cell_caster import CastProcessor
 from .stages import *
 
 class Forklift(object):
