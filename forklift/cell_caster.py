@@ -24,4 +24,4 @@ class CellCaster(object):
 
   def cast(self, dataframe):
     cast_rdd = dataframe.rdd.map(lambda row: self.cast_values_in_row(row))
-    return sql_context.createDataFrame(cast_rdd, self.schema)
+    return self.sql_context.createDataFrame(cast_rdd, self.schema)
