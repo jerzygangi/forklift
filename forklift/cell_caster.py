@@ -18,9 +18,10 @@ def cast_values_in_row(row, cast_processor_klass):
   return casted_row
 
 class CellCaster(object):
-  def __init__(self, cast_processor_klass, spark_schema):
+  def __init__(self, cast_processor_klass, spark_schema, sql_context):
     self.cast_processor_klass = cast_processor_klass
     self.schema = spark_schema
+    self.sql_context = sql_context
 
   def cast(self, dataframe):
     cast_rdd = dataframe.rdd.map(lambda row: cast_values_in_row(row, self.cast_processor_klass))
