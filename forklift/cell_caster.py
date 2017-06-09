@@ -4,6 +4,19 @@ import copy
 class CastProcessor(object):
   pass
 
+# Example cast processor class
+class MyCaster(CastProcessor):
+  # An example of casting all cells using carte blanche logic
+  def cast_all_cells(self, value):
+    if isinstance(value, float):
+      return Decimal(value)
+    else:
+      return value
+  # An example of casting values of column_name
+  def cast_example_column_name(self, example_value):
+    if isinstance(example_value, int):
+      return example_value + 1000
+
 class CellCaster(object):
   def __init__(self, cast_processor_klass, spark_schema, sql_context):
     self.cast_processor_klass = cast_processor_klass
