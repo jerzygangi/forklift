@@ -1,4 +1,4 @@
-from .rdd_cell_caster import RDDCellCaster
+from .rdd_cell_caster import cast_values_in_row
 
 # Parent class from which to inherit your cast processors
 class CastProcessor(object):
@@ -11,6 +11,5 @@ class CellCaster(object):
     self.sql_context = sql_context
 
   def cast(self, dataframe):
-    rdd_caster = RDDCellCaster(dataframe.rdd, self.cast_processor_klass)
-    cast_rdd = rdd_caster.cast()
+    cast_rdd = dataframe.rdd.map(lambda row: cast_values_in_row(row, self.cast_processor_klass))
     return self.sql_context.createDataFrame(cast_rdd, self.schema)
