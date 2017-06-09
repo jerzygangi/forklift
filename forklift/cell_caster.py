@@ -12,7 +12,7 @@ def cast_cell(column_name, old_cell_value, cast_processor_klass):
   else:
     return old_cell_value
 
-def cast_values_in_row(row):
+def cast_values_in_row(row, cast_processor_klass):
   uncast_row = row.asDict()
   casted_row = {column_name: cast_cell(column_name, cell_value, cast_processor_klass) for column_name, cell_value in uncast_row.items()}
   return casted_row
@@ -24,5 +24,5 @@ class CellCaster(object):
     self.sql_context = sql_context
 
   def cast(self, dataframe):
-    cast_rdd = dataframe.rdd.map(lambda row: cast_values_in_row(row))
+    cast_rdd = dataframe.rdd.map(lambda row: cast_values_in_row(row, self.cast_processor_klass))
     return self.sql_context.createDataFrame(cast_rdd, self.schema)
