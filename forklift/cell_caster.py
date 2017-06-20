@@ -5,7 +5,7 @@ class CastProcessor(object):
   pass
 
 # Example cast processor class
-class MyCaster(CastProcessor):
+class ExampleCaster(CastProcessor):
   # An example of casting all cells using carte blanche logic
   def cast_all_cells(self, value):
     if isinstance(value, float):
