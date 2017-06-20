@@ -21,9 +21,6 @@ class Forklift(object):
     return not (False in [True if ForkliftNSStage in stage.__bases__ else False for stage in stages])
 
   def normalize_and_sanitize(self, dataframe, with_spark_schema, remappings_file_path, cast_processor, stages=[NS_ALL]):
-    d = [{'name': 'Alice', 'age': 1}]
-    self.sql_context.createDataFrame(d).collect()
-
     print("Step 1: Check that arguments are valid")
     if not isinstance(dataframe, DataFrame):
       raise TypeError("dataframe must be an instance of Dataframe")
