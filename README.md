@@ -10,6 +10,54 @@ If you're building a 21st century data pipeline on Hadoop, and orchestrating it 
 4. Have fun!
 
 ## What can Forklift do?
+### Sanitize and normalize a dataframe
+A common ETL task is force a myriad schemas into a common schema, and cast datatypes along the way. In Forklift, this process is called *Normalize and Sanitize*:
+
+```bash
+# Define what columns to include, and what to name them
+cat ~/my_remappings.json
+{
+  "remappings":{
+    "timestamp": "date",
+    "url": "domain",
+    "clicks": "clicks"
+  }
+}
+```
+
+and in `pyspark`:
+
+```python
+# Create a dataframe
+df1 = sqlContext.read.parquet("hdfs:///website_data.parquet")
+
+# Create a Spark output schema
+from pyspark.sql.types import *
+def my_schema():
+  return StructType([
+    StructField("date", DateType(), True),
+    StructField("domain", StringType(), True),
+    StructField("clicks", LongType(), True)
+  ])
+
+# Tell Forklift how you want to cast datatypes
+from forklift.cell_caster import CastProcessor
+class MyCaster(CastProcessor):
+	def cast_all_cells(self, value):
+		if isinstance(value, float):
+			return Decimal(value)
+		else:
+			return value
+	def cast_domain(self, domain):
+		return "http://" + domain
+
+# Normalize and sanitize the dataframe
+from forklift import Forklift
+from forklift.stages import *
+fork = Forklift(sqlContext)
+df1_normalized_and_sanitized = fork.normalize_and_sanitize(df1, my_schema(), "~/my_remappings.json", MyCaster, [NS_ALL])
+```
+
 ### Make an Excel file from dataframes
 XLSBuilder builds an Excel file, with a tab for each Spark dataframe:
 
