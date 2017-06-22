@@ -9,10 +9,6 @@
 
 # Abstract parent class that each concrete adapter should subclass
 class Adapter(object):
-  def __init__(self):
-    # Each subclass should override these
-    self.required_read_options = []
-    self.required_write_options = []
 
   # Each subclass should override this
   def read(self, sql_context, **kwargs):
