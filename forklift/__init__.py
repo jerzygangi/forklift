@@ -4,11 +4,14 @@ from os.path import isfile
 from pyspark.sql.dataframe import DataFrame
 from pyspark.sql.types import *
 # Forklift
-from .column_renamer import ColumnRenamer
-from .column_deleter import ColumnDeleter
-from .cell_caster import CellCaster
-from .cell_caster import CastProcessor
-from .stages import *
+  # N&S
+  from .column_renamer import ColumnRenamer
+  from .column_deleter import ColumnDeleter
+  from .cell_caster import CellCaster
+  from .cell_caster import CastProcessor
+  from .stages import *
+  # Move
+  import .warehouse import Warehouse
 
 class Forklift(object):
   def __init__(self, sql_context):
