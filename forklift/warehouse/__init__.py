@@ -18,7 +18,7 @@ class Warehouse(object):
     for warehouse_adapter_klass in self.warehouse_adapters:
       try:
         warehouse_adapter_instance = warehouse_adapter_klass()
-        return warehouse_adapter_instance.read(sql_context, options)
+        return warehouse_adapter_instance.read(sql_context, options=options)
       except CantReadUsingThisAdapterException:
         pass # (do next loop)
     # Step 2: If we haven't returned by this point, it means that none
@@ -35,7 +35,7 @@ class Warehouse(object):
     for warehouse_adapter_klass in self.warehouse_adapters:
       try:
         warehouse_adapter_instance = warehouse_adapter_klass()
-        warehouse_adapter_instance.write(dataframe, options)
+        warehouse_adapter_instance.write(dataframe, options=options)
         return
       except CantWriteUsingThisAdapterException:
         pass # (do next loop)
