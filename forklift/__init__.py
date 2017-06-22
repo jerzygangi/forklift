@@ -81,7 +81,9 @@ class Forklift(object):
     warehouse = Warehouse()
 
     print("Step 3: Load the dataframe")
-    from_df = warehouse.read(from_options)
+    from_df = warehouse.read(self.sql_context, from_options)
 
     print("Step 4: Write the dataframe")
     warehouse.write(from_df, to_options)
+    
+    return
