@@ -11,7 +11,7 @@ from .cell_caster import CellCaster
 from .cell_caster import CastProcessor
 from .stages import *
 # Move
-import .warehouse import Warehouse
+from .warehouse import Warehouse
 
 class Forklift(object):
   def __init__(self, sql_context):
