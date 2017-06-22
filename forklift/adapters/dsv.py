@@ -37,7 +37,7 @@ class DSVAdapter(Adapter):
     # Try to use this adapter
     try:
       print("Step 1: Write out the DSV file")
-      df.write \
+      dataframe.write \
         .format('com.databricks.spark.csv') \
         .mode(options["output_mode"]) \
         .save(options["url"])
