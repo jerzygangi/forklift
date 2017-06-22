@@ -37,3 +37,18 @@ class RequiredKeyOptionsWasntProvidedException(Exception):
 # Custom exception class for ...
 class OptionsIsntADictionaryException(Exception):
 	pass
+
+# Usage:
+# @ensure_required_options_exist(["first_name", "middle_name", "last_name"])
+# def say_hello(**kwargs):
+#   print("Hi there, {0} {1} {2}".format(kwargs["options"]["first_name"], kwargs["options"]["middle_name"], kwargs["options"]["last_name"]))
+#
+# my_name = {}
+# my_name["first_name"] = "Jerzy"
+# my_name["middle_name"] = "Joseph"
+# my_name["last_name"] = "Gangi"
+#
+# try:
+#   say_hello(options=my_name)
+# except (RequiredOptionsArentAllPresentException, RequiredKeyOptionsWasntProvidedException):
+#   print("Sorry, not all options were provided to say_name()!")
