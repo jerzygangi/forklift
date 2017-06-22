@@ -12,8 +12,10 @@ class Adapter(object):
 
   # Each subclass should override this
   def read(self, sql_context, **kwargs):
+    # Return a DataFrame in the subclass
     pass
 
   # Each subclass should override this
   def write(self, dataframe, **kwargs):
+    # Return nothing in the subclass
     pass
