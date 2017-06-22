@@ -51,4 +51,4 @@ class OptionsIsntADictionaryException(Exception):
 # try:
 #   say_hello(options=my_name)
 # except (RequiredOptionsArentAllPresentException, RequiredKeyOptionsWasntProvidedException):
-#   print("Sorry, not all options were provided to say_name()!")
+#   print("Sorry, not all options were provided to say_hello()!")
