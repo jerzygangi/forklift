@@ -31,17 +31,17 @@ from forklift.adapters.dsv import DSVAdapter
 DSVAdapter.read_options()
 DSVAdapter.write_options()
 
-# For CSV and TSV files
+# For Parquet files in HDFS or S3
 from forklift.adapters.parquet import ParquetAdapter
 ParquetAdapter.read_options()
 ParquetAdapter.write_options()
 
-# For CSV and TSV files
+# For Postgres tables
 from forklift.adapters.postgresql import PostgreSQLAdapter
 PostgreSQLAdapter.read_options()
 PostgreSQLAdapter.write_options()
 
-# For CSV and TSV files
+# For Redshift tables
 from forklift.adapters.redshift import RedshiftAdapter
 RedshiftAdapter.read_options()
 RedshiftAdapter.write_options()
