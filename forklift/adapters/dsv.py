@@ -38,7 +38,7 @@ class DSVAdapter(Adapter):
     try:
       # N.B. At this time, writing to CSV is the only DSV supported
       print("Step 1: The format must be CSV, or else we defer to the next Adapter in the flyweight")
-      if not options["format"] in ["csv", "Csv", "CSV"]):
+      if not options["format"] in ["csv", "Csv", "CSV"]:
         raise CantWriteUsingThisAdapterException
       print("Step 2: Write out the DSV file")
       dataframe.write \
