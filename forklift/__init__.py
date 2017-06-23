@@ -4,11 +4,14 @@ from os.path import isfile
 from pyspark.sql.dataframe import DataFrame
 from pyspark.sql.types import *
 # Forklift
+# N&S
 from .column_renamer import ColumnRenamer
 from .column_deleter import ColumnDeleter
 from .cell_caster import CellCaster
 from .cell_caster import CastProcessor
 from .stages import *
+# Move
+from .warehouse import Warehouse
 
 class Forklift(object):
   def __init__(self, sql_context):
@@ -62,3 +65,25 @@ class Forklift(object):
 
     print("Step 5: Return the normalized and sanitized dataframe")
     return dataframe
+
+  def move(self, from_options, to_options):
+    print("Step 1: Check that arguments are valid")
+    if not isinstance(from_options, dict):
+      raise TypeError("from_options must be a Dictionary (dict)")
+    if not isinstance(to_options, dict):
+      raise TypeError("to_options must be a Dictionary (dict)")
+    if len(from_options) < 1:
+      raise ValueError("from_options can't be empty")
+    if len(to_options) < 1:
+      raise ValueError("to_options can't be empty")
+    
+    print("Step 2: Create a warehouse flyweight")
+    warehouse = Warehouse()
+
+    print("Step 3: Load the dataframe")
+    from_df = warehouse.read(self.sql_context, from_options)
+
+    print("Step 4: Write the dataframe")
+    warehouse.write(from_df, to_options)
+    
+    return

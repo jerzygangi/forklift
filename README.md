@@ -10,8 +10,57 @@ If you're building a 21st century data pipeline on Hadoop, and orchestrating it 
 4. Have fun!
 
 ## What can Forklift do?
+### Move data around
+A common ETL task is to move data between stores your warehouse or lake. HDFS, Redshift, PostgreSQL, S3, CSV/TSV, and Parquet are all natively supported. Watch how easy Forklift.move() makes it to *Move Data*:
+
+```python
+# Let's move some data from Redshift into HDFS
+move_from = {"url": "jdbc:redshift://db1.example.com/cars"}
+move_to = {"url": "hdfs:///warehouse/cars.parquet"}
+
+# Make a forklift, and move it
+from forklift import Forklift
+Forklift(sqlContext).move(move_from, move_to)
+```
+
+A list of arguments to pass to each warehouse adapter can be found by:
+
+```python
+# For CSV and TSV files
+from forklift.adapters.dsv import DSVAdapter
+DSVAdapter.read_options()
+DSVAdapter.write_options()
+
+# For Parquet files in HDFS or S3
+from forklift.adapters.parquet import ParquetAdapter
+ParquetAdapter.read_options()
+ParquetAdapter.write_options()
+
+# For Postgres tables
+from forklift.adapters.postgresql import PostgreSQLAdapter
+PostgreSQLAdapter.read_options()
+PostgreSQLAdapter.write_options()
+
+# For Redshift tables
+from forklift.adapters.redshift import RedshiftAdapter
+RedshiftAdapter.read_options()
+RedshiftAdapter.write_options()
+```
+
+### Read & write dataframes
+The same engine, Warehouse, that powers Forklift.move() can be used to quickly *Read and Write DataFrames*:
+
+```python
+# Tell Forklift where to save the DataFrame
+save_to = {"url": "hdfs:///warehouse/cars.parquet"}
+
+# And save it
+from forklift.warehouse import Warehouse
+Warehouse().write(my_dataframe, save_to)
+```
+
 ### Sanitize and normalize a dataframe
-A common ETL task is force a myriad schemas into a common schema, and cast datatypes along the way. In Forklift, this process is called *Normalize and Sanitize*:
+Another common ETL task is force a myriad schemas into a common schema, and cast datatypes along the way. In Forklift, this process is called *Normalize and Sanitize*:
 
 ```bash
 # Define what columns to include, and what to name them
