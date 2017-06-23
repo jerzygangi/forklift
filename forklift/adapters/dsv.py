@@ -1,5 +1,6 @@
 from ..utilities.options_checker import *
 from . import Adapter
+from ..warehouse.forklift_df import ForkliftDataFrame
 from ..exceptions import CantReadUsingThisAdapterException, CantWriteUsingThisAdapterException
 
 class DSVAdapter(Adapter):
@@ -40,7 +41,11 @@ class DSVAdapter(Adapter):
       print("Step 1: The format must be CSV, or else we defer to the next Adapter in the flyweight")
       if options["format"] not in ["csv", "Csv", "CSV"]:
         raise CantWriteUsingThisAdapterException
-      print("Step 2: Write out the DSV file")
+      print("Step 2: Repartition the dataframe, if requested, by turning it into a Forklift DataFrame and safely coalescing it")
+      if "partitions" in options.keys():
+         dataframe = ForkliftDataFrame(dataframe)
+         dataframe = dataframe.safely_coalesce(options["partitions"])
+      print("Step 3: Write out the DSV file")
       dataframe.write \
         .format('com.databricks.spark.csv') \
         .mode(options["output_mode"]) \
@@ -57,4 +62,4 @@ class DSVAdapter(Adapter):
 
   @classmethod
   def write_options(klass):
-    return ["output_mode", "url"]
+    return ["output_mode", "url", "OPTIONAL: partitions"]

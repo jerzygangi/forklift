@@ -1,5 +1,6 @@
 from ..utilities.options_checker import *
 from . import Adapter
+from ..warehouse.forklift_df import ForkliftDataFrame
 from ..exceptions import CantReadUsingThisAdapterException, CantWriteUsingThisAdapterException
 
 class ParquetAdapter(Adapter):
@@ -34,7 +35,11 @@ class ParquetAdapter(Adapter):
       print("Step 1: The format must be Parquet, or else we defer to the next Adapter in the flyweight")
       if options["format"] not in ["parquet", "Parquet", "PARQUET"]:
         raise CantWriteUsingThisAdapterException
-      print("Step 2: Write out the Parquet directory")
+      print("Step 2: Repartition the dataframe, if requested, by turning it into a Forklift DataFrame and safely coalescing it")
+      if "partitions" in options.keys():
+         dataframe = ForkliftDataFrame(dataframe)
+         dataframe = dataframe.safely_coalesce(options["partitions"])
+      print("Step 3: Write out the Parquet directory")
       dataframe.write \
         .option("compression", "none") \
         .mode(options["output_mode"]) \
@@ -51,4 +56,4 @@ class ParquetAdapter(Adapter):
 
   @classmethod
   def write_options(klass):
-    return ["output_mode", "url"]
+    return ["output_mode", "url", "OPTIONAL: partitions"]
