@@ -20,9 +20,9 @@ class DSVAdapter(Adapter):
         .load(options["url"]) \
         .registerTempTable(options["table_name_in_select_query"])
       print("Step 3: Make a DataFrame by running the select query on the DSV's temporary table")
-      dataframe = sqlContext.sql(options["select_query"])      
+      dataframe = sql_context.sql(options["select_query"])      
       print("Step 4: Drop the temporary table of the DSV file")
-      sqlContext.dropTempTable(options["table_name_in_select_query"])      
+      sql_context.dropTempTable(options["table_name_in_select_query"])
       print("Step 5: Return the queried DSV file as a DataFrame")
       return dataframe
     # If it bombs for any reason, skip it!
