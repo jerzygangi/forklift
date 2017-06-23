@@ -11,8 +11,8 @@ class ParquetAdapter(Adapter):
     # Try to use this adapter
     try:
       print("Step 1: A parquet directory must end in .parquet")
-        if not options["url"].endswith(".parquet"):
-          raise CantLoadUsingThisAdapterException
+      if not options["url"].endswith(".parquet"):
+        raise CantLoadUsingThisAdapterException
       print("Step 2: Read in the Parquet directory as a temporary table")
       sql_context.read \
         .parquet(options["url"]) \
@@ -35,8 +35,8 @@ class ParquetAdapter(Adapter):
     # Try to use this adapter
     try:
       print("Step 1: A parquet directory must end in .parquet")
-        if not options["url"].endswith(".parquet"):
-          raise CantWriteUsingThisAdapterException
+      if not options["url"].endswith(".parquet"):
+        raise CantWriteUsingThisAdapterException
       print("Step 2: Write out the Parquet directory")
       dataframe.write \
         .option("compression", "none") \
