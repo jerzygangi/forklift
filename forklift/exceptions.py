@@ -7,3 +7,9 @@ class CantReadUsingThisAdapterException(Exception):
 # a DataFrame, but cannot
 class CantWriteUsingThisAdapterException(Exception):
   pass
+
+# Custom exception class for when all Forklift adapters have
+# attempted to achieve a connection to the warehouse using the
+# provided options, but none have worked
+class NoWarehouseAdaptersCouldConnectException(Exception):
+  pass
