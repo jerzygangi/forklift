@@ -10,18 +10,15 @@ class ParquetAdapter(Adapter):
     
     # Try to use this adapter
     try:
-      print("Step 1: A parquet directory must end in .parquet")
-      if not options["url"].endswith(".parquet"):
-        raise CantLoadUsingThisAdapterException
-      print("Step 2: Read in the Parquet directory as a temporary table")
+      print("Step 1: Read in the Parquet directory as a temporary table")
       sql_context.read \
         .parquet(options["url"]) \
         .registerTempTable(options["table_name_in_select_query"])
-      print("Step 3: Make a DataFrame by running the select query on the Parquet's temporary table")
+      print("Step 2: Make a DataFrame by running the select query on the Parquet's temporary table")
       dataframe = sql_context.sql(options["select_query"])
-      print("Step 4: Drop the temporary table of the Parquet directory")
+      print("Step 3: Drop the temporary table of the Parquet directory")
       sql_context.dropTempTable(options["table_name_in_select_query"])
-      print("Step 5: Return the queried Parquet directory as a DataFrame")
+      print("Step 4: Return the queried Parquet directory as a DataFrame")
       return dataframe
     # If it bombs for any reason, skip it!
     except:
@@ -34,10 +31,7 @@ class ParquetAdapter(Adapter):
     
     # Try to use this adapter
     try:
-      print("Step 1: A parquet directory must end in .parquet")
-      if not options["url"].endswith(".parquet"):
-        raise CantWriteUsingThisAdapterException
-      print("Step 2: Write out the Parquet directory")
+      print("Step 1: Write out the Parquet directory")
       dataframe.write \
         .option("compression", "none") \
         .mode(options["output_mode"]) \
