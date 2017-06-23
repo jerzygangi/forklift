@@ -1,8 +1,4 @@
 from ..utilities.options_checker import *
-from .dsv import DSVAdapter
-from .parquet import ParquetAdapter
-from .postgresql import PostgreSQLAdapter
-from .redshift import RedshiftAdapter
 from ..exceptions import CantReadUsingThisAdapterException, CantWriteUsingThisAdapterException
 
 # An "Adapter" is a way of reading data into spark.
