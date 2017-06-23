@@ -1,3 +1,6 @@
+from ..utilities import options_checker
+from .exceptions import CantReadUsingThisAdapterException, CantWriteUsingThisAdapterException
+
 # An "Adapter" is a way of reading data into spark.
 #
 # Currently, Forklift ships with four adapters: DSV for .csv

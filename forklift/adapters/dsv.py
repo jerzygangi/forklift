@@ -1,4 +1,4 @@
-from .. import utilities.options_checker
+from ..utilities import options_checker
 from .adapters import Adapter
 from .exceptions import CantReadUsingThisAdapterException, CantWriteUsingThisAdapterException
 
