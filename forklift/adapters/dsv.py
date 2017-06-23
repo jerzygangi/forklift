@@ -30,13 +30,17 @@ class DSVAdapter(Adapter):
       print("WARNING: Could not load this DSV into a DataFrame")
       raise CantReadUsingThisAdapterException
 
-  @ensure_required_options_exist(["output_mode", "url"])
+  @ensure_required_options_exist(["output_mode", "url", "format"])
   def write(self, dataframe, **kwargs):
     options = kwargs["options"]
 
     # Try to use this adapter
     try:
-      print("Step 1: Write out the DSV file")
+      # N.B. At this time, writing to CSV is the only DSV supported
+      print("Step 1: The format must be CSV, or else we defer to the next Adapter in the flyweight")
+      if not options["format"] in ["csv", "Csv", "CSV"]):
+        raise CantWriteUsingThisAdapterException
+      print("Step 2: Write out the DSV file")
       dataframe.write \
         .format('com.databricks.spark.csv') \
         .mode(options["output_mode"]) \
