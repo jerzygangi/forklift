@@ -1,5 +1,5 @@
 from ..utilities import options_checker
-from .exceptions import CantReadUsingThisAdapterException, CantWriteUsingThisAdapterException
+from ..exceptions import CantReadUsingThisAdapterException, CantWriteUsingThisAdapterException
 
 # An "Adapter" is a way of reading data into spark.
 #

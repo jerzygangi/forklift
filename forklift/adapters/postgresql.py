@@ -1,6 +1,6 @@
 from ..utilities import options_checker
 from .adapters import Adapter
-from .exceptions import CantReadUsingThisAdapterException, CantWriteUsingThisAdapterException
+from ..exceptions import CantReadUsingThisAdapterException, CantWriteUsingThisAdapterException
 
 class PostgreSQLAdapter(Adapter):
 
