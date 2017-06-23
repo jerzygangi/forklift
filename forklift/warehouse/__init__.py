@@ -3,6 +3,7 @@ from ..adapters.parquet import ParquetAdapter
 from ..adapters.postgresql import PostgreSQLAdapter
 from ..adapters.redshift import RedshiftAdapter
 from ..exceptions import CantReadUsingThisAdapterException, CantWriteUsingThisAdapterException, NoWarehouseAdaptersCouldConnectException
+from ..utilities.options_checker import RequiredOptionsArentAllPresentException
 
 class Warehouse(object):
   def __init__(self):
@@ -19,7 +20,7 @@ class Warehouse(object):
       try:
         warehouse_adapter_instance = warehouse_adapter_klass()
         return warehouse_adapter_instance.read(sql_context, options=options)
-      except CantReadUsingThisAdapterException:
+      except (CantReadUsingThisAdapterException, RequiredOptionsArentAllPresentException):
         print("WARNING: Could not read using {0}".format(warehouse_adapter_klass))
         pass # (do next loop)
     # Step 2: If we haven't returned by this point, it means that none
@@ -38,7 +39,7 @@ class Warehouse(object):
         warehouse_adapter_instance = warehouse_adapter_klass()
         warehouse_adapter_instance.write(dataframe, options=options)
         return
-      except CantWriteUsingThisAdapterException:
+      except (CantReadUsingThisAdapterException, RequiredOptionsArentAllPresentException):
         print("WARNING: Could not write using {0}".format(warehouse_adapter_klass))
         pass # (do next loop)
     # Step 2: If we haven't returned by this point, it means that none
