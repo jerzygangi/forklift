@@ -14,16 +14,13 @@ If you're building a 21st century data pipeline on Hadoop, and orchestrating it 
 A common ETL task is to move data between stores your warehouse or lake. HDFS, Redshift, PostgreSQL, S3, CSV/TSV, and Parquet are all natively supported. Watch how easy Forklift.move() makes it to *Move Data*:
 
 ```python
-# Create a Forklift
-from forklift import Forklift
-fork = Forklift(sqlContext)
-
-# Tell Forklift where you're moving from and to
+# Let's move some data from Redshift into HDFS
 move_from = {"url": "jdbc:redshift://db1.example.com/cars"}
 move_to = {"url": "hdfs:///warehouse/cars.parquet"}
 
-# And move the data
-fork.move(move_from, move_to)
+# BAM. Done.
+from forklift import Forklift
+Forklift(sqlContext).move(move_from, move_to)
 ```
 
 A list of arguments to pass to each warehouse adapter can be found by:
@@ -51,15 +48,14 @@ RedshiftAdapter.write_options()
 ```
 
 ### Read & write dataframes
-The same engine, Warehouse, that powers Forklift.move() can be used to *Read and Write DataFrames*:
+The same engine, Warehouse, that powers Forklift.move() can be used to quickly *Read and Write DataFrames*:
 
 ```python
-from forklift.warehouse import Warehouse
-
 # Tell Forklift where to save the DataFrame
 save_to = {"url": "hdfs:///warehouse/cars.parquet"}
 
 # And save it
+from forklift.warehouse import Warehouse
 Warehouse().write(my_dataframe, save_to)
 ```
 
