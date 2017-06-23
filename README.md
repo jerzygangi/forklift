@@ -18,7 +18,7 @@ A common ETL task is to move data between stores your warehouse or lake. HDFS, R
 move_from = {"url": "jdbc:redshift://db1.example.com/cars"}
 move_to = {"url": "hdfs:///warehouse/cars.parquet"}
 
-# BAM. Done.
+# Make a forklift, and move it
 from forklift import Forklift
 Forklift(sqlContext).move(move_from, move_to)
 ```
