@@ -20,6 +20,7 @@ class Warehouse(object):
         warehouse_adapter_instance = warehouse_adapter_klass()
         return warehouse_adapter_instance.read(sql_context, options=options)
       except CantReadUsingThisAdapterException:
+        print("WARNING: Could not read using {0}".format(warehouse_adapter_klass))
         pass # (do next loop)
     # Step 2: If we haven't returned by this point, it means that none
     # of the adapters worked, so we let the caller know that we couldn't
@@ -38,6 +39,7 @@ class Warehouse(object):
         warehouse_adapter_instance.write(dataframe, options=options)
         return
       except CantWriteUsingThisAdapterException:
+        print("WARNING: Could not write using {0}".format(warehouse_adapter_klass))
         pass # (do next loop)
     # Step 2: If we haven't returned by this point, it means that none
     # of the adapters worked, so we let the caller know that we couldn't
