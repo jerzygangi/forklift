@@ -45,3 +45,11 @@ class PostgreSQLAdapter(Adapter):
     except:
       print("WARNING: Could not save this PostgreSQL table to a DataFrame")
       raise CantWriteUsingThisAdapterException
+
+  @classmethod
+  def read_options(klass):
+    return ["jdbc_connection_string", "sql_select_query", "username", "password"]
+
+  @classmethod
+  def write_options(klass):
+    return ["jdbc_connection_string", "table_name", "output_mode", "username", "password"]

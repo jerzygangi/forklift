@@ -41,3 +41,11 @@ class RedshiftAdapter(Adapter):
     except:
       print("WARNING: Could not save this Redshift table to a DataFrame")
       raise CantWriteUsingThisAdapterException
+
+  @classmethod
+  def read_options(klass):
+    return ["jdbc_connection_string", "sql_select_query", "s3_temp_directory"]
+
+  @classmethod
+  def write_options(klass):
+    return ["jdbc_connection_string", "table_name", "s3_temp_directory", "output_mode"]

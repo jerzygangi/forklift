@@ -19,3 +19,17 @@ class Adapter(object):
   def write(self, dataframe, **kwargs):
     # Return nothing in the subclass
     pass
+  
+  # Each subclass should override this
+  @classmethod
+  def read_options(klass):
+    # Return an array of strings that are required options when
+    # calling read()
+    return [""]
+
+  # Each subclass should override this
+  @classmethod
+  def write_options(klass):
+    # Return an array of strings that are required options when
+    # calling write()
+    return [""]

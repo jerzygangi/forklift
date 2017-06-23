@@ -47,3 +47,11 @@ class ParquetAdapter(Adapter):
     except:
       print("WARNING: Could not save this DataFrame to a Parquet directory")
       raise CantWriteUsingThisAdapterException
+
+  @classmethod
+  def read_options(klass):
+    return ["url", "select_query", "table_name_in_select_query"]
+
+  @classmethod
+  def write_options(klass):
+    return ["output_mode", "url"]
