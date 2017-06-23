@@ -29,13 +29,14 @@ class RedshiftAdapter(Adapter):
     # Try to use this adapter
     try:
       print("Step 1: Write out the Redshift table")
-      return dataframe.write \
+      dataframe.write \
         .format("com.databricks.spark.redshift") \
         .option("url", options["jdbc_connection_string"]) \
         .option("dbtable", options["table_name"]) \
         .option("tempdir", options["s3_temp_directory"]) \
         .mode(options["output_mode"]) \
         .save()
+      return
     # If it bombs for any reason, skip it!
     except:
       print("WARNING: Could not save this Redshift table to a DataFrame")
