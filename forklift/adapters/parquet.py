@@ -1,5 +1,5 @@
 from ..utilities import options_checker
-from .adapters import Adapter
+from . import Adapter
 from ..exceptions import CantReadUsingThisAdapterException, CantWriteUsingThisAdapterException
 
 class ParquetAdapter(Adapter):
