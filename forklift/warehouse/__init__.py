@@ -1,8 +1,8 @@
-from .adapters.dsv import DSVAdapter
-from .adapters.parquet import ParquetAdapter
-from .adapters.postgresql import PostgreSQLAdapter
-from .adapters.redshift import RedshiftAdapter
-from .exceptions import CantReadUsingThisAdapterException, CantWriteUsingThisAdapterException, NoWarehouseAdaptersCouldConnectException
+from ..adapters.dsv import DSVAdapter
+from ..adapters.parquet import ParquetAdapter
+from ..adapters.postgresql import PostgreSQLAdapter
+from ..adapters.redshift import RedshiftAdapter
+from ..exceptions import CantReadUsingThisAdapterException, CantWriteUsingThisAdapterException, NoWarehouseAdaptersCouldConnectException
 
 class Warehouse(object):
   def __init__(self):
