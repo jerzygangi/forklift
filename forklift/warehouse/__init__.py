@@ -39,7 +39,7 @@ class Warehouse(object):
         warehouse_adapter_instance = warehouse_adapter_klass()
         warehouse_adapter_instance.write(dataframe, options=options)
         return
-      except (CantReadUsingThisAdapterException, RequiredOptionsArentAllPresentException):
+      except (CantWriteUsingThisAdapterException, RequiredOptionsArentAllPresentException):
         print("WARNING: Could not write using {0}".format(warehouse_adapter_klass))
         pass # (do next loop)
     # Step 2: If we haven't returned by this point, it means that none
