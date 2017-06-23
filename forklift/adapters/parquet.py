@@ -31,7 +31,7 @@ class ParquetAdapter(Adapter):
     
     # Try to use this adapter
     try:
-      print("Step 1: The format must be parquet, or else we defer to the next Adapter in the flyweight")
+      print("Step 1: The format must be Parquet, or else we defer to the next Adapter in the flyweight")
       if options["format"] not in ["parquet", "Parquet", "PARQUET"]:
         raise CantWriteUsingThisAdapterException
       print("Step 2: Write out the Parquet directory")
