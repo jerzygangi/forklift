@@ -7,7 +7,7 @@ from ..exceptions import CantReadUsingThisAdapterException, CantWriteUsingThisAd
 class Warehouse(object):
   def __init__(self):
     # These are the curently supported warehouse adapters
-    self.warehouse_adapters = [DSVIO, ParquetIO, PostgreSQLIO, RedshiftIO]
+    self.warehouse_adapters = [DSVAdapter, ParquetAdapter, PostgreSQLAdapter, RedshiftAdapter]
 
   # To read a "table" from the warehouse, loop over each warehouse
   # adapter and try to load in the requested options. The first adapter
