@@ -63,7 +63,7 @@ class Forklift(Object):
     else:
       print("Skipping Step 4: Cast each cell, according to the Caster instance provided")
 
-    print("Step 5: Return the normalized and sanitized dataframe")
+    print("Step 5: Return the normalized and sanitized DataFrame")
     return dataframe
 
   def move(self, from_options, to_options):
