@@ -1,7 +1,7 @@
 # Python
 import json
 # Forklift
-from .join import join_with_remappings
+from .join import join_with_mappings
 from .join.joinable import are_dataframes_joinable
 
 class Decorator(Object):
@@ -21,7 +21,7 @@ class Decorator(Object):
       # Step 2: Make a deep copy of the mappings, since we edit the mappings hash destructively
       mappings_dereferenced = copy.deepcopy(mappings)
       # Step 3: Join the DataFrame to decorate, with the DataFrame to decrorate it with, using the copy of mappings
-      decorated_dataframe = join_with_remappings(decorate_dataframe, with_dataframe, mappings_dereferenced)
+      decorated_dataframe = join_with_mappings(decorate_dataframe, with_dataframe, mappings_dereferenced)
       # Step 4: Call this function again, with all mappings, but with only the remaining with DataFrames
       return self.decorate(decorated_dataframe, with_dataframes)
     except IndexError:
