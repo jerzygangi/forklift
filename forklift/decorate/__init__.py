@@ -1,8 +1,8 @@
 # Python
 import json
 # Forklift
-from .join import join_with_mappings
-from .join.joinable import are_dataframes_joinable
+from ..join import join_with_mappings
+from ..join.joinable import are_dataframes_joinable
 
 class Decorator(object):
   def __init__(self, mapping_file_path):
