@@ -4,7 +4,7 @@ import json
 
 # Custom exception class for trying to rename a column that doesn't exist
 class CannotRenameAColumnThatDoesntExistException(Exception):
-    pass
+  pass
 
 class ColumnRenamer(object):
   def __init__(self, remappings_file_path):
