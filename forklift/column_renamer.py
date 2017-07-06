@@ -11,7 +11,7 @@ class CannotParseRemappingsException(Exception):
   pass
 
 
-class ColumnRenamer(Object):
+class ColumnRenamer(object):
   def __init__(self, remappings):
     # remappings can be a file path of a JSON file to load, or a dictionary of remappings
     if isinstance(remappings, str):

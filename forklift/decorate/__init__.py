@@ -4,7 +4,7 @@ import json
 from .join import join_with_mappings
 from .join.joinable import are_dataframes_joinable
 
-class Decorator(Object):
+class Decorator(object):
   def __init__(self, mapping_file_path):
     with open(mapping_file_path) as mapping_file:
         self.mappings = json.load(mapping_file)["mappings"]

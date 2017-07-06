@@ -1,4 +1,4 @@
-class ForkliftNSStage(Object):
+class ForkliftNSStage(object):
   pass
 
 class NS_ALL(ForkliftNSStage):

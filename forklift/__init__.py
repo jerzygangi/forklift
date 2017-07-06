@@ -15,7 +15,7 @@ from .warehouse import Warehouse
 # Decorate
 from decorate import Decorator
 
-class Forklift(Object):
+class Forklift(object):
   def __init__(self, sql_context):
     self.sql_context = sql_context
 
