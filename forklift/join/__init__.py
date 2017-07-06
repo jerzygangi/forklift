@@ -4,7 +4,7 @@
 
 # Forklift
 from .joinable import are_dataframes_joinable
-from .column_renamer import ColumnRenamer
+from ..column_renamer import ColumnRenamer
 
 # This function takes in two DataFrames, and joins them using many mapping rules
 # It does this by recursing over each mapping, joining decorate_dataframe to with_dataframe for each mapping
