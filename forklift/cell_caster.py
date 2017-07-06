@@ -1,7 +1,7 @@
 import copy
 
 # Parent class from which to inherit your cast processors
-class CastProcessor(object):
+class CastProcessor(Object):
   pass
 
 # Example cast processor class
@@ -17,7 +17,7 @@ class ExampleCaster(CastProcessor):
     if isinstance(example_value, int):
       return example_value + 1000
 
-class CellCaster(object):
+class CellCaster(Object):
   def __init__(self, cast_processor_klass, spark_schema, sql_context):
     self.cast_processor_klass = cast_processor_klass
     self.schema = spark_schema

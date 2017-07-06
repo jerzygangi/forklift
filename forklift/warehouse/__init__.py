@@ -5,7 +5,7 @@ from ..adapters.redshift import RedshiftAdapter
 from ..exceptions import CantReadUsingThisAdapterException, CantWriteUsingThisAdapterException, NoWarehouseAdaptersCouldConnectException
 from ..utilities.options_checker import RequiredOptionsArentAllPresentException
 
-class Warehouse(object):
+class Warehouse(Object):
   def __init__(self):
     # These are the curently supported warehouse adapters
     self.warehouse_adapters = [DSVAdapter, ParquetAdapter, PostgreSQLAdapter, RedshiftAdapter]

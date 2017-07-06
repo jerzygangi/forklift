@@ -11,7 +11,7 @@ from ..exceptions import CantReadUsingThisAdapterException, CantWriteUsingThisAd
 # (below), and commit it! :)
 
 # Abstract parent class that each concrete adapter should subclass
-class Adapter(object):
+class Adapter(Object):
 
   # Each subclass should override this
   def read(self, sql_context, **kwargs):

@@ -13,7 +13,7 @@ from .stages import *
 # Move
 from .warehouse import Warehouse
 
-class Forklift(object):
+class Forklift(Object):
   def __init__(self, sql_context):
     self.sql_context = sql_context
 

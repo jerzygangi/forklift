@@ -1,7 +1,7 @@
 # Python
 import json
 
-class ColumnDeleter(object):
+class ColumnDeleter(Object):
   def __init__(self, remappings_file_path):
     with open(remappings_file_path) as remappings_file:
         self.column_remappings = json.load(remappings_file)["remappings"]
