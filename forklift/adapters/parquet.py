@@ -56,4 +56,4 @@ class ParquetAdapter(Adapter):
 
   @classmethod
   def write_options(klass):
-    return ["output_mode", "url", "OPTIONAL: partitions"]
+    return ["url", "output_mode", "format", "OPTIONAL: partitions"]
