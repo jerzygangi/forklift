@@ -1,4 +1,5 @@
 from ..utilities.options_checker import *
+from ..utilities.read_sql_file import *
 from . import Adapter
 from ..exceptions import CantReadUsingThisAdapterException, CantWriteUsingThisAdapterException
 
@@ -10,11 +11,19 @@ class RedshiftAdapter(Adapter):
 
     # Try to use this adapter
     try:
-      print("Step 1: Read the Redshift query into a DataFrame")
+      print("Step 1: Load the select query from a file, if necessary")
+      if not isinstance(options["sql_select_query"], str):
+        raise CantReadUsingThisAdapterException
+      select_query_as_string = None
+      try:
+        select_query_as_string = read_sql_file(options["sql_select_query"])
+      except StringIsNotAFileException:
+        select_query_as_string = options["sql_select_query"]
+      print("Step 2: Read the Redshift query into a DataFrame")
       return sql_context.read \
         .format("com.databricks.spark.redshift") \
         .option("url", options["jdbc_connection_string"]) \
-        .option("query", options["sql_select_query"]) \
+        .option("query", select_query_as_string) \
         .option("tempdir", options["s3_temp_directory"]) \
         .load()
     # If it bombs for any reason, skip it!
