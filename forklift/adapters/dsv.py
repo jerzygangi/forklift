@@ -5,7 +5,7 @@ from ..exceptions import CantReadUsingThisAdapterException, CantWriteUsingThisAd
 
 class DSVAdapter(Adapter):
 
-  @ensure_required_options_exist(["delimiter", "has_header", "delimiter", "url", "select_query", "table_name_in_select_query"])
+  @ensure_required_options_exist(["delimiter", "has_header", "url", "select_query", "table_name_in_select_query"])
   def read(self, sql_context, **kwargs):
     options = kwargs["options"]
 
@@ -58,7 +58,7 @@ class DSVAdapter(Adapter):
 
   @classmethod
   def read_options(klass):
-    return ["delimiter", "has_header", "delimiter", "url", "select_query", "table_name_in_select_query"]
+    return ["delimiter", "has_header", "url", "select_query", "table_name_in_select_query"]
 
   @classmethod
   def write_options(klass):
