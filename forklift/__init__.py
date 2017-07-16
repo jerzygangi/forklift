@@ -96,7 +96,7 @@ class Forklift(object):
       return False
     return not (False in [True if dataframe.__class__ == DataFrame else False for dataframe in dataframes])
 
-  def decorate(source_dataframe, with_dataframes, mapping_file_path):
+  def decorate(self, source_dataframe, with_dataframes, mapping_file_path):
     print("Step 1: Check that arguments are valid")
     if not isinstance(source_dataframe, DataFrame):
       raise TypeError("source_dataframe must be an instance of DataFrame")
