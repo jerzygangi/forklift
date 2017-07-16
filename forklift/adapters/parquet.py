@@ -18,6 +18,7 @@ class ParquetAdapter(Adapter):
         .registerTempTable(options["table_name_in_select_query"])
       print("Step 2: Load the select query from a file, if necessary")
       if not isinstance(options["select_query"], str):
+        print(options["select_query"].__class__)
         print("WARNING: The select_query provided was not a string")
         raise CantReadUsingThisAdapterException
       select_query_as_string = None
