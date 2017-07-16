@@ -2,6 +2,8 @@
 #
 # N.B. join_with_mappings and join_with_mapping are two different functions
 
+# Python
+import copy
 # Forklift
 from .joinable import are_dataframes_joinable
 from ..column_renamer import ColumnRenamer
