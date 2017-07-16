@@ -12,13 +12,16 @@ class RedshiftAdapter(Adapter):
     # Try to use this adapter
     try:
       print("Step 1: Load the select query from a file, if necessary")
-      if not isinstance(options["sql_select_query"], str):
+      if not isinstance(options["sql_select_query"], (str, unicode)):
+        print("WARNING: The sql_select_query provided was not a string")
         raise CantReadUsingThisAdapterException
       select_query_as_string = None
       try:
         select_query_as_string = read_sql_file(options["sql_select_query"])
+        print("WARNING: The sql_select_query was identified as a file")
       except StringIsNotAFileException:
         select_query_as_string = options["sql_select_query"]
+        print("WARNING: The sql_select_query was identified as a SQL string")
       print("Step 2: Read the Redshift query into a DataFrame")
       return sql_context.read \
         .format("com.databricks.spark.redshift") \
