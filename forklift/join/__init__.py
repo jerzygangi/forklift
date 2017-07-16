@@ -53,7 +53,7 @@ def join_with_mapping(decorate_dataframe, with_dataframe, mapping):
   # Remove mappings that would collide decorate_dataframe and with_dataframe
   compatible_mappings = mappings_that_dont_exist_on_dataframe(decorate_dataframe, compatible_mappings, "becomes_this_column_name")
   # Make sure there's at least 1 mapping left, otherwise joining would be pointless
-  if len(decorate_and_with_compatible_mappings) < 1:
+  if len(compatible_mappings) < 1:
     return decorate_dataframe
   # Step 3: Narrow down with_dataframe to what is needed
   # Get the columns the user requested from with_dataframe
