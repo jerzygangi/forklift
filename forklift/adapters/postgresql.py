@@ -1,4 +1,5 @@
 from ..utilities.options_checker import *
+from ..utilities.read_sql_file import *
 from . import Adapter
 from ..exceptions import CantReadUsingThisAdapterException, CantWriteUsingThisAdapterException
 
@@ -10,14 +11,22 @@ class PostgreSQLAdapter(Adapter):
     
     # Try to use this adapter
     try:
+      print("Step 1: Load the select query from a file, if necessary")
+      if not isinstance(options["sql_select_query"], str):
+        raise CantReadUsingThisAdapterException
+      select_query_as_string = None
+      try:
+        select_query_as_string = read_sql_file(options["sql_select_query"])
+      except StringIsNotAFileException:
+        select_query_as_string = options["sql_select_query"]
       # For executing a query on a JDBC connection, view syntax instructions:
       # 1) https://docs.databricks.com/spark/latest/data-sources/sql-databases.html#pushdown-an-entire-query
       # 2) http://stackoverflow.com/questions/34365692/spark-sql-load-data-with-jdbc-using-sql-statement-not-table-name
-      print("Step 1: Read the PostgreSQL query into a DataFrame")
+      print("Step 2: Read the PostgreSQL query into a DataFrame")
       return sql_context.read \
         .format("jdbc") \
         .option("url", options["jdbc_connection_string"]) \
-        .option("dbtable", "({0}) AS tmp".format(options["sql_select_query"])) \
+        .option("dbtable", "({0}) AS tmp".format(select_query_as_string)) \
         .option("user", options["username"]) \
         .option("password", options["password"]) \
         .option("mode", "error") \
