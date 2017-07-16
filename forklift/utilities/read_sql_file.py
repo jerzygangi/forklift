@@ -3,7 +3,7 @@ class StringIsNotAFileException(Exception):
 
 def read_sql_file(path):
   try:
-    with open(path) as the_file:
-        return json.load(the_file)
+    with open(path, "r") as the_file:
+      return the_file.read()
   except:
     raise StringIsNotAFileException
