@@ -13,12 +13,15 @@ class PostgreSQLAdapter(Adapter):
     try:
       print("Step 1: Load the select query from a file, if necessary")
       if not isinstance(options["sql_select_query"], str):
+        print("WARNING: The sql_select_query provided was not a string")
         raise CantReadUsingThisAdapterException
       select_query_as_string = None
       try:
         select_query_as_string = read_sql_file(options["sql_select_query"])
+        print("WARNING: The sql_select_query was identified as a file")
       except StringIsNotAFileException:
         select_query_as_string = options["sql_select_query"]
+        print("WARNING: The sql_select_query was identified as a SQL string")
       # For executing a query on a JDBC connection, view syntax instructions:
       # 1) https://docs.databricks.com/spark/latest/data-sources/sql-databases.html#pushdown-an-entire-query
       # 2) http://stackoverflow.com/questions/34365692/spark-sql-load-data-with-jdbc-using-sql-statement-not-table-name

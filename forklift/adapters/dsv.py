@@ -17,12 +17,15 @@ class DSVAdapter(Adapter):
         raise CantLoadUsingThisAdapterException 
       print("Step 2: Load the select query from a file, if necessary")
       if not isinstance(options["select_query"], str):
+        print("WARNING: The select_query provided was not a string")
         raise CantReadUsingThisAdapterException
       select_query_as_string = None
       try:
         select_query_as_string = read_sql_file(options["select_query"])
+        print("WARNING: The select_query was identified as a file")
       except StringIsNotAFileException:
         select_query_as_string = options["select_query"]
+        print("WARNING: The select_query was identified as a SQL string")
       print("Step 3: Read in the DSV file as a temporary table")
       sql_context.read \
         .format('com.databricks.spark.csv') \

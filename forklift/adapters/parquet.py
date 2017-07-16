@@ -18,12 +18,15 @@ class ParquetAdapter(Adapter):
         .registerTempTable(options["table_name_in_select_query"])
       print("Step 2: Load the select query from a file, if necessary")
       if not isinstance(options["select_query"], str):
+        print("WARNING: The select_query provided was not a string")
         raise CantReadUsingThisAdapterException
       select_query_as_string = None
       try:
         select_query_as_string = read_sql_file(options["select_query"])
+        print("WARNING: The select_query was identified as a file")
       except StringIsNotAFileException:
         select_query_as_string = options["select_query"]
+        print("WARNING: The select_query was identified as a SQL string")
       print("Step 3: Make a DataFrame by running the select query on the Parquet's temporary table")
       dataframe = sql_context.sql(select_query_as_string)
       print("Step 3: Drop the temporary table of the Parquet directory")
