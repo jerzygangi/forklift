@@ -12,7 +12,7 @@ class RedshiftAdapter(Adapter):
     # Try to use this adapter
     try:
       print("Step 1: Load the select query from a file, if necessary")
-      if not isinstance(options["sql_select_query"], str):
+      if not isinstance(options["sql_select_query"], (str, unicode)):
         print("WARNING: The sql_select_query provided was not a string")
         raise CantReadUsingThisAdapterException
       select_query_as_string = None

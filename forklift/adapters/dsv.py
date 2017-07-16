@@ -16,7 +16,7 @@ class DSVAdapter(Adapter):
       if options["delimiter"] not in [",", "\t"]:
         raise CantLoadUsingThisAdapterException 
       print("Step 2: Load the select query from a file, if necessary")
-      if not isinstance(options["select_query"], str):
+      if not isinstance(options["select_query"], (str, unicode)):
         print("WARNING: The select_query provided was not a string")
         raise CantReadUsingThisAdapterException
       select_query_as_string = None
