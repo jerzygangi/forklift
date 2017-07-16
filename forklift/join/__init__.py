@@ -2,6 +2,8 @@
 #
 # N.B. join_with_mappings and join_with_mapping are two different functions
 
+# Python
+import copy
 # Forklift
 from .joinable import are_dataframes_joinable
 from ..column_renamer import ColumnRenamer
@@ -51,7 +53,7 @@ def join_with_mapping(decorate_dataframe, with_dataframe, mapping):
   # Remove mappings that would collide decorate_dataframe and with_dataframe
   compatible_mappings = mappings_that_dont_exist_on_dataframe(decorate_dataframe, compatible_mappings, "becomes_this_column_name")
   # Make sure there's at least 1 mapping left, otherwise joining would be pointless
-  if len(decorate_and_with_compatible_mappings) < 1:
+  if len(compatible_mappings) < 1:
     return decorate_dataframe
   # Step 3: Narrow down with_dataframe to what is needed
   # Get the columns the user requested from with_dataframe
@@ -63,4 +65,4 @@ def join_with_mapping(decorate_dataframe, with_dataframe, mapping):
   with_dataframe = with_dataframe.withColumnRenamed(mapping["with_join_column_name"], "__temp_with_join_column")
   # Step 4: Return the joined DataFrame,
   # getting rid of the uniquely-named join column along the way
-  return decorate_dataframe.join(with_dataframe, decorate_df[mapping["this_join_column_name"]] == with_df_only_columns_needed_renamed_and_predefined_join_column["__temp_with_join_column"], "inner").drop("__temp_with_join_column")
+  return decorate_dataframe.join(with_dataframe, decorate_dataframe[mapping["this_join_column_name"]] == with_dataframe["__temp_with_join_column"], "inner").drop("__temp_with_join_column")

@@ -1,5 +1,6 @@
 # Python
 import json
+import copy
 # Forklift
 from ..join import join_with_mappings
 from ..join.joinable import are_dataframes_joinable
