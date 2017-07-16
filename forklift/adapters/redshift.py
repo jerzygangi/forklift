@@ -30,9 +30,9 @@ class RedshiftAdapter(Adapter):
         .option("tempdir", options["s3_temp_directory"]) \
         .load()
     # If it bombs for any reason, skip it!
-    except:
-      print("WARNING: Could not load this Redshift query into a DataFrame")
-      raise CantReadUsingThisAdapterException
+    except Exception as e:
+      print("WARNING: Could not load this Redshift query into a DataFrame: {0}".format(e))
+      raise CantReadUsingThisAdapterException(e)
 
   @ensure_required_options_exist(["jdbc_connection_string", "table_name", "s3_temp_directory", "output_mode"])
   def write(self, dataframe, **kwargs):
@@ -50,9 +50,9 @@ class RedshiftAdapter(Adapter):
         .save()
       return
     # If it bombs for any reason, skip it!
-    except:
-      print("WARNING: Could not save this Redshift table to a DataFrame")
-      raise CantWriteUsingThisAdapterException
+    except Exception as e:
+      print("WARNING: Could not save this Redshift table to a DataFrame: {0}".format(e))
+      raise CantWriteUsingThisAdapterException(e)
 
   @classmethod
   def read_options(klass):

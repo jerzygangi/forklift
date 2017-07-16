@@ -39,9 +39,9 @@ class DSVAdapter(Adapter):
       print("Step 6: Return the queried DSV file as a DataFrame")
       return dataframe
     # If it bombs for any reason, skip it!
-    except:
-      print("WARNING: Could not load this DSV into a DataFrame")
-      raise CantReadUsingThisAdapterException
+    except Exception as e:
+      print("WARNING: Could not load this DSV into a DataFrame: {0}".format(e))
+      raise CantReadUsingThisAdapterException(e)
 
   @ensure_required_options_exist(["output_mode", "url", "format"])
   def write(self, dataframe, **kwargs):
@@ -64,9 +64,9 @@ class DSVAdapter(Adapter):
         .save(options["url"])
       return
     # If it bombs for any reason, skip it!
-    except:
-      print("WARNING: Could not save this DataFrame to a DSV file")
-      raise CantWriteUsingThisAdapterException
+    except Exception as e:
+      print("WARNING: Could not save this DataFrame to a DSV file: {0}".format(e))
+      raise CantWriteUsingThisAdapterException(e)
 
   @classmethod
   def read_options(klass):

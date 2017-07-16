@@ -35,9 +35,9 @@ class PostgreSQLAdapter(Adapter):
         .option("mode", "error") \
         .load()
     # If it bombs for any reason, skip it!
-    except:
-      print("WARNING: Could not load this PostgreSQL query into a DataFrame")
-      raise CantReadUsingThisAdapterException
+    except Exception as e:
+      print("WARNING: Could not load this PostgreSQL query into a DataFrame: {0}".format(e))
+      raise CantReadUsingThisAdapterException(e)
 
   @ensure_required_options_exist(["jdbc_connection_string", "table_name", "output_mode", "username", "password"])
   def write(self, dataframe, **kwargs):
@@ -54,9 +54,9 @@ class PostgreSQLAdapter(Adapter):
       )
       return
     # If it bombs for any reason, skip it!
-    except:
-      print("WARNING: Could not save this PostgreSQL table to a DataFrame")
-      raise CantWriteUsingThisAdapterException
+    except Exception as e:
+      print("WARNING: Could not save this PostgreSQL table to a DataFrame: {0}".format(e))
+      raise CantWriteUsingThisAdapterException(e)
 
   @classmethod
   def read_options(klass):
