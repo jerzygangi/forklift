@@ -12,6 +12,8 @@ from .cell_caster import CastProcessor
 from .stages import *
 # Move
 from .warehouse import Warehouse
+# Decorate
+from decorate import Decorator
 
 class Forklift(object):
   def __init__(self, sql_context):
@@ -63,7 +65,7 @@ class Forklift(object):
     else:
       print("Skipping Step 4: Cast each cell, according to the Caster instance provided")
 
-    print("Step 5: Return the normalized and sanitized dataframe")
+    print("Step 5: Return the normalized and sanitized DataFrame")
     return dataframe
 
   def move(self, from_options, to_options):
@@ -87,3 +89,29 @@ class Forklift(object):
     warehouse.write(from_df, to_options)
     
     return
+
+  @classmethod
+  def validate_list_of_dataframes(klass, dataframes):
+    if not isinstance(dataframes, list):
+      return False
+    return not (False in [True if dataframe.__class__ == DataFrame else False for dataframe in dataframes])
+
+  def decorate(source_dataframe, with_dataframes, mapping_file_path):
+    print("Step 1: Check that arguments are valid")
+    if not isinstance(source_dataframe, DataFrame):
+      raise TypeError("source_dataframe must be an instance of DataFrame")
+    if not isinstance(with_dataframes, list):
+      raise TypeError("with_dataframes must be an Array (list)")
+    if not self.validate_list_of_dataframes(with_dataframes):
+      raise TypeError("with_dataframes must be a list of DataFrames")
+    if not isinstance(mapping_file_path, str):
+      raise TypeError("mapping_file_path must be a String (str)")
+    if not isfile(mapping_file_path):
+      raise ValueError("mapping_file_path must be a file that exists")
+
+    print("Step 2: Create 1 new, decorated DataFrame by merging all of the source and with DataFrames together, according to the JSON mapping")
+    decorator = Decorator(mapping_file_path)
+    decorated_df = decorator.decorate(source_dataframe, with_dataframes)
+
+    print("Step 3: Return the decorated DataFrame")
+    return decorated_df

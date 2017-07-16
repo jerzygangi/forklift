@@ -4,13 +4,27 @@ import json
 
 # Custom exception class for trying to rename a column that doesn't exist
 class CannotRenameAColumnThatDoesntExistException(Exception):
-    pass
+  pass
+
+# Custom exception class for not being able to read the provided remappings
+class CannotParseRemappingsException(Exception):
+  pass
+
 
 class ColumnRenamer(object):
-  def __init__(self, remappings_file_path):
-    with open(remappings_file_path) as remappings_file:
-        self.column_remappings = json.load(remappings_file)["remappings"]
-  
+  def __init__(self, remappings):
+    # remappings can be a file path of a JSON file to load, or a dictionary of remappings
+    if isinstance(remappings, str):
+      try:
+        with open(remappings) as remappings_file:
+          self.column_remappings = json.load(remappings_file)["remappings"]
+      except:
+        raise CannotParseRemappingsException
+    elif isinstance(remappings, dict):
+      self.column_remappings = remappings
+    else:
+      raise CannotParseRemappingsException
+
   def rename_columns(self, dataframe, dictionary_of_column_remapping=None):
     # As per https://stackoverflow.com/a/1802980/98168
     if dictionary_of_column_remapping is None:
