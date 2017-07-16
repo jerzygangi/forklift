@@ -2,7 +2,7 @@ from distutils.core import setup
 
 setup(
     name='forklift',
-    version='0.4.9',
+    version='0.4.10',
     author='Jerzy J. Gangi',
     author_email='jerzy@jerzygangi.com',
     packages=['forklift'],
