@@ -35,9 +35,9 @@ class ParquetAdapter(Adapter):
       print("Step 4: Return the queried Parquet directory as a DataFrame")
       return dataframe
     # If it bombs for any reason, skip it!
-    except:
-      print("WARNING: Could not load this Parquet directory into a DataFrame")
-      raise CantReadUsingThisAdapterException
+    except Exception as e:
+      print("WARNING: Could not load this Parquet directory into a DataFrame: {0}".format(e))
+      raise CantReadUsingThisAdapterException(e)
 
   @ensure_required_options_exist(["output_mode", "url", "format"])
   def write(self, dataframe, **kwargs):
@@ -59,9 +59,9 @@ class ParquetAdapter(Adapter):
         .parquet(options["url"])
       return
     # If it bombs for any reason, skip it!
-    except:
-      print("WARNING: Could not save this DataFrame to a Parquet directory")
-      raise CantWriteUsingThisAdapterException
+    except Exception as e:
+      print("WARNING: Could not save this DataFrame to a Parquet directory: {0}".format(e))
+      raise CantWriteUsingThisAdapterException(e)
 
   @classmethod
   def read_options(klass):
