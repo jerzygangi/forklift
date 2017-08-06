@@ -65,4 +65,4 @@ def join_with_mapping(decorate_dataframe, with_dataframe, mapping):
   with_dataframe = with_dataframe.withColumnRenamed(mapping["with_join_column_name"], "__temp_with_join_column")
   # Step 4: Return the joined DataFrame,
   # getting rid of the uniquely-named join column along the way
-  return decorate_dataframe.join(with_dataframe, decorate_dataframe[mapping["this_join_column_name"]] == with_dataframe["__temp_with_join_column"], "inner").drop("__temp_with_join_column")
+  return decorate_dataframe.join(with_dataframe, decorate_dataframe[mapping["this_join_column_name"]] == with_dataframe["__temp_with_join_column"], "left_outer").drop("__temp_with_join_column")
