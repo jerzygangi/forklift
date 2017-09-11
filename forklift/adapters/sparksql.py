@@ -32,6 +32,7 @@ class SparkSQLAdapter(Adapter):
   @ensure_required_options_exist(["table_name", "output_mode"])
   def write(self, dataframe, **kwargs):
     options = kwargs["options"]
+    table_name = kwargs["table_name"]
 
     # Try to use this adapter
     try:
