@@ -23,7 +23,7 @@ class SparkSQLAdapter(Adapter):
         select_query_as_string = options["sql_select_query"]
         print("WARNING: The sql_select_query was identified as a SQL string")
       print("Step 2: Read the SparkSQL query into a DataFrame")
-      return sql_context.sql(sql_select_query)
+      return sql_context.sql(select_query_as_string)
     # If it bombs for any reason, skip it!
     except Exception as e:
       print("WARNING: Could not load this SparkSQL query into a DataFrame: {0}".format(e))
