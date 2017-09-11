@@ -2,13 +2,14 @@ from ..adapters.dsv import DSVAdapter
 from ..adapters.parquet import ParquetAdapter
 from ..adapters.postgresql import PostgreSQLAdapter
 from ..adapters.redshift import RedshiftAdapter
+from ..adapters.sparksql import SparkSQLAdapter
 from ..exceptions import CantReadUsingThisAdapterException, CantWriteUsingThisAdapterException, NoWarehouseAdaptersCouldConnectException
 from ..utilities.options_checker import RequiredOptionsArentAllPresentException
 
 class Warehouse(object):
   def __init__(self):
     # These are the curently supported warehouse adapters
-    self.warehouse_adapters = [DSVAdapter, ParquetAdapter, PostgreSQLAdapter, RedshiftAdapter]
+    self.warehouse_adapters = [DSVAdapter, ParquetAdapter, PostgreSQLAdapter, RedshiftAdapter, SparkSQLAdapter]
 
   # To read a "table" from the warehouse, loop over each warehouse
   # adapter and try to load in the requested options. The first adapter
