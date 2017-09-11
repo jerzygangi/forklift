@@ -38,7 +38,7 @@ class SparkSQLAdapter(Adapter):
       print("Step 1: Write out the DataStore")
       dataframe.write \
         .mode(options["output_mode"]) \
-        .saveAsTable("table_name")
+        .saveAsTable(table_name)
       return
     # If it bombs for any reason, skip it!
     except Exception as e:
