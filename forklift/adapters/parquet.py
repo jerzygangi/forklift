@@ -56,7 +56,7 @@ class ParquetAdapter(Adapter):
       
       dataframe_writer = dataframe.write \
         .option("compression", "none") \
-        .mode(options["output_mode"]) \  
+        .mode(options["output_mode"])
 
       # partition by the supplied column. 
       if "partition_by" in options.keys():
