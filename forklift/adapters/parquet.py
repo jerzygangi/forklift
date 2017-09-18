@@ -53,10 +53,15 @@ class ParquetAdapter(Adapter):
          dataframe = ForkliftDataFrame(dataframe)
          dataframe = dataframe.safely_coalesce(options["partitions"])
       print("Step 3: Write out the Parquet directory")
-      dataframe.write \
+      
+      dataframe_writer = dataframe.write \
         .option("compression", "none") \
-        .mode(options["output_mode"]) \
-        .parquet(options["url"])
+        .mode(options["output_mode"]) \  
+
+      # partition by the supplied column. 
+      if "partition_by" in options.keys():
+        dataframe_writer = dataframe_writer.partitionBy(options["partition_by"])
+      dataframe_writer.parquet(options["url"])
       return
     # If it bombs for any reason, skip it!
     except Exception as e:
@@ -69,4 +74,4 @@ class ParquetAdapter(Adapter):
 
   @classmethod
   def write_options(klass):
-    return ["url", "output_mode", "format", "OPTIONAL: partitions"]
+    return ["url", "output_mode", "format", "OPTIONAL: partitions", "partition_by"]
