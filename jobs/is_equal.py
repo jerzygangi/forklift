@@ -25,14 +25,22 @@ class ForkliftCLIArumentsWereNotProvidedException(Exception):
 class CannotRunIsEqualWithoutAtLeastOneEqualityToCheckException(Exception):
   pass
 
-# Custom exception class representing invalid Forklift JSON options passed in as one
-# To determine valid syntax for Forklift read options, call adapter.read_options()
-class ForkliftOneOptionsAreNotValidJSONException(Exception):
+# Custom exception class representing invalid JSON options passed in as one
+class OneOptionsAreNotValidJSONException(Exception):
   pass
 
 # Custom exception class representing invalid JSON options passed in as another
-# To determine valid syntax for Forklift write options, call adapter.read_options()
-class ForkliftAnotherOptionsAreNotValidJSONException(Exception):
+class AnotherOptionsAreNotValidJSONException(Exception):
+  pass
+
+# Custom exception class representing invalid Forklift options passed in as one
+# To determine valid syntax for Forklift read options, call adapter.read_options()
+class ForkliftOneOptionsAreNotValidException(Exception):
+  pass
+
+# Custom exception class representing invalid Forklift options passed in as another
+# To determine valid syntax for Forklift read options, call adapter.read_options()
+class ForkliftAnotherOptionsAreNotValidException(Exception):
   pass
 
 
@@ -54,12 +62,12 @@ one_from = None
 try:
   one_from = json.loads(args.one)
 except ValueError as value_error:
-  raise ForkliftOneOptionsAreNotValidJSONException(value_error)
+  raise OneOptionsAreNotValidJSONException(value_error)
 another_from = None
 try:
   another_from = json.loads(args.another)
 except ValueError as value_error:
-  raise ForkliftAnotherOptionsAreNotValidJSONException(value_error)
+  raise AnotherOptionsAreNotValidJSONException(value_error)
 
 # Step 2: Set up our Spark and SQL contexts
 conf = SparkConf().setAppName("Check equality between two DataFrames")
@@ -70,11 +78,11 @@ sql_context = SQLContext(sparkContext)
 try:
   one = Warehouse().read(sql_context, one_from)
 except NoWarehouseAdaptersCouldConnectException:
-  raise ForkliftOneOptionsAreNotValidJSONException
+  raise ForkliftOneOptionsAreNotValidException
 try:
   another = Warehouse().read(sql_context, another_from)
 except NoWarehouseAdaptersCouldConnectException:
-  raise ForkliftAnotherOptionsAreNotValidJSONException
+  raise ForkliftAnotherOptionsAreNotValidException
 
 # Step 4: Establish a utility method which exits this program if equality
 # isn't found
