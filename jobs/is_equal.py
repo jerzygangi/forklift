@@ -11,7 +11,7 @@ import argparse
 from pyspark import SparkContext, SparkConf
 from pyspark.sql import SQLContext
 from forklift import Forklift
-
+from forklift.exceptions import NoWarehouseAdaptersCouldConnectException
 
 # Custom exception class representing that one and/or another CLI options
 # were not provided. You must call is_equal with the syntax:
