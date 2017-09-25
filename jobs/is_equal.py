@@ -72,6 +72,8 @@ if os.environ.get("DEBUG") and os.environ.get("DEBUG").lower() == "true":
 else:
   sparkContext = sparkContext.setLogLevel("OFF")
 sql_context = SQLContext(sparkContext)
+print("SQL CONTEXT IS")
+print(sql_context)
 
 # Step 3: Read in the DataFrames
 try:
