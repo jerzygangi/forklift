@@ -2,14 +2,11 @@
 # is_equal one_forklift_read_options another_forklift_read_options [options]
 # Compares one DataFrame with another, on your certain criteria
 #
-# Examine STDOUT for TRUE or FALSE, or $? for 0 or 1, respectively, for resultant equality
-#
-# Set DEBUG=true in the shell environment to enable verbose logging
+# Examine STDOUT for EQUALITY: TRUE or EQUALITY: FALSE, or $? for 0 or 1, respectively, for resultant equality
 #
 
 import json
 import sys
-import os
 import argparse
 from pyspark import SparkContext, SparkConf
 from pyspark.sql import SQLContext
@@ -63,18 +60,9 @@ try:
 except ValueError as value_error:
   raise ForkliftAnotherOptionsAreNotValidJSONException(value_error)
 
-# Step 2: Set up our Spark and SQL contexts, disabling console output by default so
-# that TRUE or FALSE is the only STDOUT
+# Step 2: Set up our Spark and SQL contexts
 conf = SparkConf().setAppName("Check equality between two DataFrames")
 sparkContext = SparkContext(conf=conf)
-print("BEFORE SPARK CONTEXT IS")
-print(sparkContext)
-if os.environ.get("DEBUG") and os.environ.get("DEBUG").lower() == "true":
-  pass # Don't change Spark's default logging level
-else:
-  sparkContext = sparkContext.setLogLevel("OFF")
-print("AFTER SPARK CONTEXT IS")
-print(sparkContext)
 sql_context = SQLContext(sparkContext)
 
 # Step 3: Read in the DataFrames
@@ -90,7 +78,7 @@ except NoWarehouseAdaptersCouldConnectException:
 # Step 4: Establish a utility method which exits this program if equality
 # isn't found
 def exit_with_falsehood():
-  print("FALSE")
+  print("EQUALITY: FALSE")
   sys.exit(1)
 
 # Step 5: If row count equality was requested, compare the row counts
@@ -125,5 +113,5 @@ if args.query is not None and args.query != '':
     exit_with_falsehood()
 
 # Step 9: If we've made it this far, one and another are equal
-print("TRUE")
+print("EQUALITY: TRUE")
 sys.exit(0)
