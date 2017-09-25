@@ -66,11 +66,11 @@ except ValueError as value_error:
 # Step 2: Set up our Spark and SQL contexts, disabling console output by default so
 # that TRUE or FALSE is the only STDOUT
 conf = SparkConf().setAppName("Check equality between two DataFrames")
+sparkContext = SparkContext(conf=conf)
 if os.environ.get("DEBUG") and os.environ.get("DEBUG").lower() == "true":
   pass # Don't change Spark's default logging level
 else:
-  conf = conf.setLogLevel("OFF")
-sparkContext = SparkContext(conf=conf)
+  sparkContext = sparkContext.setLogLevel("OFF")
 sql_context = SQLContext(sparkContext)
 
 # Step 3: Read in the DataFrames
