@@ -47,7 +47,7 @@ parser.add_argument("--query", help="Equality is dependent on the SQL query stri
 args = parser.parse_args()
 if (args.one is None) or (args.another is None):
   raise ForkliftCLIArumentsWereNotProvidedException
-if (args.rowcount is False) or (args.schema is False) or (args.query is None or args.query == ''):
+if (args.rowcount is False) and (args.schema is False) and (args.query is None or args.query == ''):
   raise CannotRunIsEqualWithoutAtLeastOneEqualityToCheckException
 
 # Step 1: Parse the Forklift read & write options from JSON into Python dictionaries
