@@ -9,6 +9,7 @@
 
 import json
 import sys
+import os
 import argparse
 from pyspark import SparkContext, SparkConf
 from pyspark.sql import SQLContext
@@ -65,9 +66,7 @@ except ValueError as value_error:
 # Step 2: Set up our Spark and SQL contexts, disabling console output by default so
 # that TRUE or FALSE is the only STDOUT
 conf = SparkConf().setAppName("Check equality between two DataFrames")
-if sys.argv["DEBUG"] and sys.argv["DEBUG"].lower() == "true":
-  conf = conf.setLogLevel("WARN")
-else:
+if not os.environ.get("DEBUG") and not os.environ.get("DEBUG").lower() == "true":
   conf = conf.setLogLevel("OFF")
 sparkContext = SparkContext(conf=conf)
 sql_context = SQLContext(sparkContext)
