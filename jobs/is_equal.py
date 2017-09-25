@@ -11,6 +11,7 @@ import argparse
 from pyspark import SparkContext, SparkConf
 from pyspark.sql import SQLContext
 from forklift import Forklift
+from forklift.warehouse import Warehouse
 from forklift.exceptions import NoWarehouseAdaptersCouldConnectException
 
 # Custom exception class representing that one and/or another CLI options
