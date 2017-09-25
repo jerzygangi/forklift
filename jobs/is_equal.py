@@ -110,6 +110,8 @@ if args.query is not None and args.query != '':
   one_queried = run_query_on_dataframe_and_get_resulting_dataframe(one)
   another_queried = run_query_on_dataframe_and_get_resulting_dataframe(another)
   # Compare the two DataFrames
+  if one_queried.schema != another_queried.schema:
+    exit_with_falsehood()
   if one_queried.subtract(another_queried).count() != 0:
     exit_with_falsehood()
 
