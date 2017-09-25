@@ -89,6 +89,10 @@ if args.rowcount is True:
 
 # Step 6: If schema equality was requested, compare the schemas
 if args.schema is True:
+  print("SCHEMA FOR ONE IS")
+  print(one.schema())
+  print("SCHEMA FOR ANOTHER IS")
+  print(another.schema())
   if one.schema() != another.schema():
     exit_with_falsehood()
 
