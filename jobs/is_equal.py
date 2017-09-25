@@ -39,8 +39,8 @@ class ForkliftAnotherOptionsAreNotValidJSONException(Exception):
 
 # Step 0: Ensure the input and output table have been specified as arguments
 parser = argparse.ArgumentParser()
-parser.add_argument("one", type=str, required=True, help="One DataFrame to compare")
-parser.add_argument("another", type=str, required=True, help="Another DataFrame compare")
+parser.add_argument("one", type=str, help="One DataFrame to compare") # required
+parser.add_argument("another", type=str, help="Another DataFrame compare") # required
 parser.add_argument("--rowcount", action='store_true', help="Equality is dependent on the number of rows matching one and another")
 parser.add_argument("--schema", action='store_true', help="Equality is dependent on the schema matching one and another")
 parser.add_argument("--query", help="Equality is dependent on the SQL query string returning identical results in one and another; use the tablename one_or_another")
