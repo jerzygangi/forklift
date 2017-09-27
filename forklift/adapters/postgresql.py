@@ -32,7 +32,6 @@ class PostgreSQLAdapter(Adapter):
         .option("dbtable", "({0}) AS tmp".format(select_query_as_string)) \
         .option("user", options["username"]) \
         .option("password", options["password"]) \
-        .option("driver", 'org.postgresql.Driver') \
         .option("mode", "error") \
         .load()
     # If it bombs for any reason, skip it!
