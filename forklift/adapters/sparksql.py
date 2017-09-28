@@ -35,14 +35,15 @@ class SparkSQLAdapter(Adapter):
 
     # Try to use this adapter
     try:
-      print("Step 1: Write out the DataStore to SparkSQL")
-      dataframe.write \
-        .mode(options["output_mode"]) \
-        .saveAsTable(options["table_name"])
+      print("Step 1: Write out the metastore table to SparkSQL")
+      dataframe.write.saveAsTable( \
+        options["table_name"], \
+        format=options["output_mode"] \
+      )
       return
     # If it bombs for any reason, skip it!
     except Exception as e:
-      print("WARNING: Could not save this SparkSQL table: {0}".format(e))
+      print("WARNING: Could not save this DataFrame to the SparkSQL metastore: {0}".format(e))
       raise CantWriteUsingThisAdapterException(e)
 
   @classmethod
