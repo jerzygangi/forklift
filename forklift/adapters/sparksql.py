@@ -35,10 +35,6 @@ class SparkSQLAdapter(Adapter):
 
     # Try to use this adapter
     try:
-
-      if "jdbc_connection_string" in options:
-        raise Exception("jdbc_connection_string is not an allowed param for SparkSQL adapter")
-
       print("Step 1: Write out the DataStore to SparkSQL")
       dataframe.write \
         .mode(options["output_mode"]) \
