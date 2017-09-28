@@ -11,7 +11,7 @@ If you're building a 21st century data pipeline on Hadoop, and orchestrating it 
 
 ## What can Forklift do?
 ### Move data around
-A common ETL task is to move data between stores your warehouse or lake. HDFS, Redshift, PostgreSQL, S3, CSV/TSV, and Parquet are all natively supported. Watch how easy Forklift.move() makes it to *Move Data*:
+A common ETL task is to move data between stores your warehouse or lake. HDFS, Redshift, SparkSQL, PostgreSQL, S3, CSV/TSV, and Parquet are all natively supported. Watch how easy Forklift.move() makes it to *Move Data*:
 
 ```python
 # Let's move some data from Redshift into HDFS
@@ -45,6 +45,11 @@ PostgreSQLAdapter.write_options()
 from forklift.adapters.redshift import RedshiftAdapter
 RedshiftAdapter.read_options()
 RedshiftAdapter.write_options()
+
+# For SparkSQL tables
+from forklift.adapters.sparksql import SparkSQLAdapter
+SparkSQLAdapter.read_options()
+SparkSQLAdapter.write_options()
 ```
 
 ### Read & write dataframes
