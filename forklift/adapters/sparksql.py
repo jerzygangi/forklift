@@ -38,7 +38,7 @@ class SparkSQLAdapter(Adapter):
       print("Step 1: Write out the metastore table to SparkSQL")
       dataframe.write.saveAsTable( \
         options["table_name"], \
-        format=options["output_mode"] \
+        mode=options["output_mode"] \
       )
       return
     # If it bombs for any reason, skip it!
