@@ -33,6 +33,7 @@ class PostgreSQLAdapter(Adapter):
         .option("user", options["username"]) \
         .option("password", options["password"]) \
         .option("mode", "error") \
+        .option("driver", "org.postgresql.Driver") \
         .load()
     # If it bombs for any reason, skip it!
     except Exception as e:
@@ -50,7 +51,7 @@ class PostgreSQLAdapter(Adapter):
         url=options["jdbc_connection_string"], \
         table=options["table_name"], \
         mode=options["output_mode"], \
-        properties={'user': options["username"], 'password': options["password"]} \
+        properties={'user': options["username"], 'password': options["password"], 'driver': 'org.postgresql.Driver'} \
       )
       return
     # If it bombs for any reason, skip it!
