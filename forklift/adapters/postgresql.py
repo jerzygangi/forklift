@@ -38,7 +38,7 @@ class PostgreSQLAdapter(Adapter):
           .format("jdbc") \
           .options(**postgres_jdbc_options) \
           .option("dbtable", "(SELECT min({partition_column}) AS minimum_pk, max({partition_column}) AS maximum_pk, count(*) AS count_pk FROM ({query}) rltion) AS tmp".format(partition_column=options["partition_column"], query=select_query_as_string)) \
-          .load()
+          .load() \
           .collect()[0]
         import math
         fetch_size = 10000
