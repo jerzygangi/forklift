@@ -33,7 +33,7 @@ class PostgreSQLAdapter(Adapter):
       # 1) https://docs.databricks.com/spark/latest/data-sources/sql-databases.html#pushdown-an-entire-query
       # 2) http://stackoverflow.com/questions/34365692/spark-sql-load-data-with-jdbc-using-sql-statement-not-table-name
       print("Step 3: If partitioning was requested, calculate partitioning for the JDBC connection")
-      if(options["partition_column"] and isinstance(options["partition_column"], (str, unicode)):
+      if(options["partition_column"] and isinstance(options["partition_column"], (str, unicode))):
         minimum, maximum, count = sql_context.read \
           .format("jdbc") \
           .options(**postgres_jdbc_options) \
