@@ -44,8 +44,8 @@ class PostgreSQLAdapter(Adapter):
         fetch_size = 10000
         computed_partitions = int(math.ceil(count*1.0/fetch_size*1.0)) or 1
         postgres_jdbc_options["fetchsize"] = fetch_size
-        postgres_jdbc_options["lowerBound"] = minimum
-        postgres_jdbc_options["upperBound"] = maximum
+        postgres_jdbc_options["lowerBound"] = minimum or 0
+        postgres_jdbc_options["upperBound"] = maximum or fetch_size
         postgres_jdbc_options["partitionColumn"] = options["partition_column"]
         postgres_jdbc_options["numPartitions"] = computed_partitions
       print("Step 4: Read the PostgreSQL query into a DataFrame")
