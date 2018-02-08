@@ -42,7 +42,7 @@ class PostgreSQLAdapter(Adapter):
           .collect()[0]
         import math
         fetch_size = 10000
-        computed_partitions = int(math.ceil(count*1.0/fetch_size*1.0))
+        computed_partitions = int(math.ceil(count*1.0/fetch_size*1.0)) or 1
         postgres_jdbc_options["fetchsize"] = fetch_size
         postgres_jdbc_options["lowerBound"] = minimum
         postgres_jdbc_options["upperBound"] = maximum
