@@ -5,7 +5,7 @@ from ..exceptions import CantReadUsingThisAdapterException, CantWriteUsingThisAd
 
 class PostgreSQLAdapter(Adapter):
 
-  @ensure_required_options_exist(["jdbc_connection_string", "sql_select_query", "username", "password"])
+  @ensure_required_options_exist(["host", "port", "database", "username", "password", "sql_select_query"])
   def read(self, sql_context, **kwargs):
     options = kwargs["options"]
     
@@ -22,37 +22,36 @@ class PostgreSQLAdapter(Adapter):
       except StringIsNotAFileException:
         select_query_as_string = options["sql_select_query"]
         print("WARNING: The sql_select_query was identified as a SQL string")
-      print("Step 2: Prepare the JDBC connection to PostgreSQL")
+      print("Step 2: Prepare the PsycoPG and JDBC connection to PostgreSQL")
+      psycopg_connection_options = {}
+      psycopg_connection_options["host"] = options["host"]
+      psycopg_connection_options["port"] = options["port"]
+      psycopg_connection_options["dbname"] = options["database"]
+      psycopg_connection_options["user"] = options["username"]
+      psycopg_connection_options["password"] = options["password"]
       postgres_jdbc_options = {}
-      postgres_jdbc_options["url"] = options["jdbc_connection_string"]
+      postgres_jdbc_options["url"] = "jdbc:postgresql://{host}:{port}/{database}".format(host=options["host"], port=options["port"], database=options["database"])
       postgres_jdbc_options["user"] = options["username"]
       postgres_jdbc_options["password"] = options["password"]
       postgres_jdbc_options["driver"] = "org.postgresql.Driver"
       postgres_jdbc_options["mode"] = "error"
-      # For executing a query on a JDBC connection, view syntax instructions:
-      # 1) https://docs.databricks.com/spark/latest/data-sources/sql-databases.html#pushdown-an-entire-query
-      # 2) http://stackoverflow.com/questions/34365692/spark-sql-load-data-with-jdbc-using-sql-statement-not-table-name
       print("Step 3: Ensure the __forklift_tmp temporary Forklift schema exists in PostgreSQL; if not, create it")
-      sql_context.read \
-        .format("jdbc") \
-        .options(**postgres_jdbc_options) \
-        .option("dbtable", "(CREATE SCHEMA IF NOT EXISTS __forklift_tmp) AS tmp") \
-        .load()        
+      import psycopg2
+      direct_postgres_connection = psycopg2.connect(**psycopg_connection_options)
+      step_3_cursor = direct_postgres_connection.cursor()
+      step_3_cursor.execute("CREATE SCHEMA IF NOT EXISTS __forklift_tmp;")
       print("Step 4: Create a new table from the query, in the __forklift_tmp schema, in PostgreSQL")
       import random
       import string
       table_with_forklift_pk_name = "".join([random.choice(string.ascii_lowercase) for n in xrange(32)])
-      sql_context.read \
-        .format("jdbc") \
-        .options(**postgres_jdbc_options) \
-        .option("dbtable", "(CREATE TABLE __forklift_tmp.{table_with_forklift_pk_name} AS ({query})) AS tmp".format(table_with_forklift_pk_name=table_with_forklift_pk_name, query=select_query_as_string)) \
-        .load()
+      step_4_cursor = direct_postgres_connection.cursor()
+      step_4_cursor.execute("CREATE TABLE __forklift_tmp.{table_with_forklift_pk_name} AS ({query});".format(table_with_forklift_pk_name=table_with_forklift_pk_name, query=select_query_as_string))
       print("Step 5: Create a Forklift primary key on the new table from the query in PostgreSQL")
-      sql_context.read \
-        .format("jdbc") \
-        .options(**postgres_jdbc_options) \
-        .option("dbtable", "(ALTER TABLE __forklift_tmp.{table_with_forklift_pk_name} ADD COLUMN __forklift_pk SERIAL PRIMARY KEY) AS tmp".format(table_with_forklift_pk_name=table_with_forklift_pk_name)) \
-        .load()
+      step_5_cursor = direct_postgres_connection.cursor()
+      step_5_cursor.execute("ALTER TABLE __forklift_tmp.{table_with_forklift_pk_name} ADD COLUMN __forklift_pk SERIAL PRIMARY KEY;".format(table_with_forklift_pk_name=table_with_forklift_pk_name))
+      # For executing a query on a JDBC connection, view syntax instructions:
+      # 1) https://docs.databricks.com/spark/latest/data-sources/sql-databases.html#pushdown-an-entire-query
+      # 2) http://stackoverflow.com/questions/34365692/spark-sql-load-data-with-jdbc-using-sql-statement-not-table-name
       print("Step 6: Calculate partitioning for the new table")
       minimum, maximum, count = sql_context.read \
         .format("jdbc") \
