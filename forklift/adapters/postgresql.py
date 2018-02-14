@@ -32,28 +32,49 @@ class PostgreSQLAdapter(Adapter):
       # For executing a query on a JDBC connection, view syntax instructions:
       # 1) https://docs.databricks.com/spark/latest/data-sources/sql-databases.html#pushdown-an-entire-query
       # 2) http://stackoverflow.com/questions/34365692/spark-sql-load-data-with-jdbc-using-sql-statement-not-table-name
-      if("partition_column" in options and isinstance(options["partition_column"], (str, unicode))):
-        print("Step 3: Calculate partitioning for the JDBC connection")
+      print("Step 3: Ensure the __forklift_tmp temporary Forklift schema exists in PostgreSQL; if not, create it")
+      sql_context.read \
+        .format("jdbc") \
+        .options(**postgres_jdbc_options) \
+        .option("dbtable", "(CREATE SCHEMA IF NOT EXISTS __forklift_tmp) AS tmp") \
+        .load()        
+      print("Step 4: Create a new table from the query, in the __forklift_tmp schema, in PostgreSQL")
+      import random
+      import string
+      table_with_forklift_pk_name = "".join([random.choice(string.ascii_lowercase) for n in xrange(32)])
+      sql_context.read \
+        .format("jdbc") \
+        .options(**postgres_jdbc_options) \
+        .option("dbtable", "(CREATE TABLE __forklift_tmp.{table_with_forklift_pk_name} AS ({query})) AS tmp".format(table_with_forklift_pk_name=table_with_forklift_pk_name, query=select_query_as_string)) \
+        .load()
+      print("Step 5: Create a Forklift primary key on the new table from the query in PostgreSQL")
+      sql_context.read \
+        .format("jdbc") \
+        .options(**postgres_jdbc_options) \
+        .option("dbtable", "(ALTER TABLE __forklift_tmp.{table_with_forklift_pk_name} ADD COLUMN __forklift_pk SERIAL PRIMARY KEY) AS tmp".format(table_with_forklift_pk_name=table_with_forklift_pk_name)) \
+        .load()
+      print("Step 6: Calculate partitioning for the new table")
         minimum, maximum, count = sql_context.read \
           .format("jdbc") \
           .options(**postgres_jdbc_options) \
-          .option("dbtable", "(SELECT min({partition_column}) AS minimum_pk, max({partition_column}) AS maximum_pk, count(*) AS count_pk FROM ({query}) rltion) AS tmp".format(partition_column=options["partition_column"], query=select_query_as_string)) \
+          .option("dbtable", "(SELECT min(__forklift_pk) AS minimum_pk, max(__forklift_pk) AS maximum_pk, count(*) AS count_pk FROM __forklift_tmp.{table_with_forklift_pk_name}) AS tmp".format(table_with_forklift_pk_name=table_with_forklift_pk_name)) \
           .load() \
           .collect()[0]
         import math
-        fetch_size = 10000
+        fetch_size = 1000
         computed_partitions = int(math.ceil(count*1.0/fetch_size*1.0)) or 1
         postgres_jdbc_options["fetchsize"] = fetch_size
         postgres_jdbc_options["lowerBound"] = minimum or 0
         postgres_jdbc_options["upperBound"] = maximum or fetch_size
-        postgres_jdbc_options["partitionColumn"] = options["partition_column"]
+        postgres_jdbc_options["partitionColumn"] = "__forklift_pk"
         postgres_jdbc_options["numPartitions"] = computed_partitions
-      print("Step 4: Read the PostgreSQL query into a DataFrame")
+      print("Step 7: Read the new table into a DataFrame using partitioning on the Forklift primary key")
       return sql_context.read \
         .format("jdbc") \
         .options(**postgres_jdbc_options) \
-        .option("dbtable", "({0}) AS tmp".format(select_query_as_string)) \
-        .load()
+        .option("dbtable", "(SELECT * FROM __forklift_tmp.{table_with_forklift_pk_name}) AS tmp".format(table_with_forklift_pk_name=table_with_forklift_pk_name)) \
+        .load() \
+        .drop('__forklift_pk')
     # If it bombs for any reason, skip it!
     except Exception as e:
       print("WARNING: Could not load this PostgreSQL query into a DataFrame: {0}".format(e))
