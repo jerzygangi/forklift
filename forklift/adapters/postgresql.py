@@ -54,20 +54,20 @@ class PostgreSQLAdapter(Adapter):
         .option("dbtable", "(ALTER TABLE __forklift_tmp.{table_with_forklift_pk_name} ADD COLUMN __forklift_pk SERIAL PRIMARY KEY) AS tmp".format(table_with_forklift_pk_name=table_with_forklift_pk_name)) \
         .load()
       print("Step 6: Calculate partitioning for the new table")
-        minimum, maximum, count = sql_context.read \
-          .format("jdbc") \
-          .options(**postgres_jdbc_options) \
-          .option("dbtable", "(SELECT min(__forklift_pk) AS minimum_pk, max(__forklift_pk) AS maximum_pk, count(*) AS count_pk FROM __forklift_tmp.{table_with_forklift_pk_name}) AS tmp".format(table_with_forklift_pk_name=table_with_forklift_pk_name)) \
-          .load() \
-          .collect()[0]
-        import math
-        fetch_size = 1000
-        computed_partitions = int(math.ceil(count*1.0/fetch_size*1.0)) or 1
-        postgres_jdbc_options["fetchsize"] = fetch_size
-        postgres_jdbc_options["lowerBound"] = minimum or 0
-        postgres_jdbc_options["upperBound"] = maximum or fetch_size
-        postgres_jdbc_options["partitionColumn"] = "__forklift_pk"
-        postgres_jdbc_options["numPartitions"] = computed_partitions
+      minimum, maximum, count = sql_context.read \
+        .format("jdbc") \
+        .options(**postgres_jdbc_options) \
+        .option("dbtable", "(SELECT min(__forklift_pk) AS minimum_pk, max(__forklift_pk) AS maximum_pk, count(*) AS count_pk FROM __forklift_tmp.{table_with_forklift_pk_name}) AS tmp".format(table_with_forklift_pk_name=table_with_forklift_pk_name)) \
+        .load() \
+        .collect()[0]
+      import math
+      fetch_size = 1000
+      computed_partitions = int(math.ceil(count*1.0/fetch_size*1.0)) or 1
+      postgres_jdbc_options["fetchsize"] = fetch_size
+      postgres_jdbc_options["lowerBound"] = minimum or 0
+      postgres_jdbc_options["upperBound"] = maximum or fetch_size
+      postgres_jdbc_options["partitionColumn"] = "__forklift_pk"
+      postgres_jdbc_options["numPartitions"] = computed_partitions
       print("Step 7: Read the new table into a DataFrame using partitioning on the Forklift primary key")
       return sql_context.read \
         .format("jdbc") \
