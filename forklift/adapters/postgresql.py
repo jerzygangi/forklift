@@ -38,17 +38,18 @@ class PostgreSQLAdapter(Adapter):
       print("Step 3: Ensure the __forklift_tmp temporary Forklift schema exists in PostgreSQL; if not, create it")
       import psycopg2
       direct_postgres_connection = psycopg2.connect(**psycopg_connection_options)
-      step_3_cursor = direct_postgres_connection.cursor()
-      step_3_cursor.execute("CREATE SCHEMA IF NOT EXISTS __forklift_tmp;")
+      direct_postgres_connection.set_session(autocommit=True)
+      direct_postgres_cursor = direct_postgres_connection.cursor()
+      direct_postgres_cursor.execute("CREATE SCHEMA IF NOT EXISTS __forklift_tmp;")
       print("Step 4: Create a new table from the query, in the __forklift_tmp schema, in PostgreSQL")
       import random
       import string
       table_with_forklift_pk_name = "".join([random.choice(string.ascii_lowercase) for n in xrange(32)])
-      step_4_cursor = direct_postgres_connection.cursor()
-      step_4_cursor.execute("CREATE TABLE __forklift_tmp.{table_with_forklift_pk_name} AS ({query});".format(table_with_forklift_pk_name=table_with_forklift_pk_name, query=select_query_as_string))
+      direct_postgres_cursor.execute("CREATE TABLE __forklift_tmp.{table_with_forklift_pk_name} AS ({query});".format(table_with_forklift_pk_name=table_with_forklift_pk_name, query=select_query_as_string))
       print("Step 5: Create a Forklift primary key on the new table from the query in PostgreSQL")
-      step_5_cursor = direct_postgres_connection.cursor()
-      step_5_cursor.execute("ALTER TABLE __forklift_tmp.{table_with_forklift_pk_name} ADD COLUMN __forklift_pk SERIAL PRIMARY KEY;".format(table_with_forklift_pk_name=table_with_forklift_pk_name))
+      direct_postgres_cursor.execute("ALTER TABLE __forklift_tmp.{table_with_forklift_pk_name} ADD COLUMN __forklift_pk SERIAL PRIMARY KEY;".format(table_with_forklift_pk_name=table_with_forklift_pk_name))
+      direct_postgres_cursor.close()
+      direct_postgres_connection.close()
       # For executing a query on a JDBC connection, view syntax instructions:
       # 1) https://docs.databricks.com/spark/latest/data-sources/sql-databases.html#pushdown-an-entire-query
       # 2) http://stackoverflow.com/questions/34365692/spark-sql-load-data-with-jdbc-using-sql-statement-not-table-name
