@@ -25,7 +25,7 @@ class XLSBuilder():
     for row_index, row in enumerate(df_as_local_python_array):
       row_number = row_index + 1 # Accout for header row added above in Step 2
       for column_index, column in enumerate(columns):
-        cell_format = column_format_definitions[column_index-1] if len(column_format_definitions) > (column_index-1) else None
+        cell_format = column_format_definitions[column_index] if len(column_format_definitions) > column_index else None
         this_tab.write(row_number, column_index, row[column], cell_format)
   def write(self):
     self.workbook.close()
