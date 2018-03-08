@@ -10,7 +10,7 @@ import xlsxwriter
 class XLSBuilder():
   def __init__(self, path):
     self.workbook = xlsxwriter.Workbook(path)
-  def addTab(self, df, tab_name):
+  def addTab(self, df, tab_name, column_format_definitions=None):
     # Step 1: Make a new tab in Excel
     this_tab = self.workbook.add_worksheet(tab_name)
     # Step 2: Write the column headers
@@ -25,6 +25,7 @@ class XLSBuilder():
     for row_index, row in enumerate(df_as_local_python_array):
       row_number = row_index + 1 # Accout for header row added above in Step 2
       for column_index, column in enumerate(columns):
-        this_tab.write(row_number, column_index, row[column])
+        cell_format = column_format_definitions[column_index-1] if len(column_format_definitions) > (column_index-1) else None
+        this_tab.write(row_number, column_index, row[column], cell_format)
   def write(self):
     self.workbook.close()
